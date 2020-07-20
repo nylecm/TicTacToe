@@ -1,3 +1,6 @@
+/**
+ * @author nylecm
+ */
 public class TicTacToeGrid {
     public final int numberOfRowsAndColumns = 3;
     public final int maxGridPosition = numberOfRowsAndColumns *

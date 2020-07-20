@@ -1,7 +1,10 @@
 import java.util.Scanner;
 
+/**
+ * @author nylecm
+ */
 public class TicTacToe {
-    private static String[] playerNames = new String[2];
+    private static final String[] playerNames = new String[2];
 
     public static void main(String[] args) {
         playTicTacToe();
@@ -21,13 +24,39 @@ public class TicTacToe {
 
         TicTacToeGrid grid = new TicTacToeGrid();
 
-        while (! grid.isGameFinished()) {
+        while (!grid.isGameFinished()) {
+            if (grid.getNextPlayer() == 1) {
+                System.out.print(playerNames[0] + "'s go enter position number " +
+                        "to place your cross:");
+            } else {
+                System.out.print(playerNames[1] + "'s go enter position number " +
+                        "to place your nought:");
+            }
+
+            String playerInput;
+            boolean isSymbolPlaced = false;
+
+            //Main gameplay loop
+            while (!isSymbolPlaced) {
+                playerInput = in.nextLine();
+
+                if (playerInput.equals("I")) {
+                    printInstructions();
+                } else if (true) {
+                    //TODO Place symbol code inside a try catch.
+                    isSymbolPlaced = true;
+                }
+            }
+
 
         }
 
         //game over.
     }
 
+    /**
+     * Prints the game instructions on the screen.
+     */
     private static void printInstructions() {
         System.out.println("How to Play:\n");
         System.out.println("Every turn enter the position at which you want your " +
@@ -44,6 +73,6 @@ public class TicTacToe {
         System.out.println("\nEg. to place a symbol in the centre type 5 on " +
                 "your turn.");
         System.out.println("If you want to see the instructions again type I at " +
-                "any time."); //TODO type I for instructions
+                "any time.");
     }
 }
