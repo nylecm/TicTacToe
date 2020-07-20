@@ -10,11 +10,6 @@ public class TicTacToe {
     private static String player1Name;
     private static String player2Name;
 
-    private enum GRID_STATUS {
-        X_CLAIMED,
-        O_CLAIMED,
-    }
-
     public static void main(String[] args) {
         playTicTacToe();
     }
