@@ -1,7 +1,12 @@
 import java.util.Scanner;
 
 public class TicTacToe {
-    private static GRID_STATUS[][] gameBoard;
+    private static final int NUMBER_OF_ROWS_AND_COLUMNS = 3;
+    private static final int MAX_GRID_POSITION = NUMBER_OF_ROWS_AND_COLUMNS *
+            NUMBER_OF_ROWS_AND_COLUMNS;
+
+    private static GRID_STATUS[][] gameBoard = new
+            GRID_STATUS[NUMBER_OF_ROWS_AND_COLUMNS][NUMBER_OF_ROWS_AND_COLUMNS];
     private static String player1Name;
     private static String player2Name;
 
@@ -41,23 +46,24 @@ public class TicTacToe {
 
     private static boolean isWin() {
         // True When 3 in a row.
-        for (GRID_STATUS[] gridRow :) {
+        for (GRID_STATUS[] gridRow : ) {
 
         }
     }
 
     private static boolean isGridPositionOccupied(int gridPosition) {
-        if (gameBoard[convertPositionNumberToRowNumber(gridPosition)][convertPositionNumberToColumnNumber(gridPosition)] == GRID_STATUS.UNCLAIMED) {
-            return true;
-        }
-        return gameBoard[][]
+        return gameBoard[convertPositionNumberToRowNumber(gridPosition)]
+                [convertPositionNumberToColumnNumber(gridPosition)] == null;
     }
 
+    private static boolean isGridPositionOccupied(int gridRow, int gridColumn) {
+        return gameBoard[gridRow][gridColumn] == null;
+    }
 
     private static int convertPositionNumberToRowNumber(int gridPosition) {
-        if (gridPosition < 1 || gridPosition > 9) {
+        if (gridPosition < 1 || gridPosition > MAX_GRID_POSITION) {
             throw new IllegalArgumentException("Grid Position cannot be less " +
-                    "than 1 or more than 9.");
+                    "than 1 or more than " + MAX_GRID_POSITION + ".");
         } else if (gridPosition <= 3) {
             return 0;
         } else if (gridPosition <= 6) {
@@ -68,9 +74,9 @@ public class TicTacToe {
     }
 
     private static int convertPositionNumberToColumnNumber(int gridPosition) {
-        if (gridPosition < 1 || gridPosition > 9) {
+        if (gridPosition < 1 || gridPosition > MAX_GRID_POSITION) {
             throw new IllegalArgumentException("Grid Position cannot be less " +
-                    "than 1 or more than 9.");
+                    "than 1 or more than " + MAX_GRID_POSITION + ".");
         } else if (gridPosition % 3 == 1) {
             return 0;
         } else if (gridPosition % 3 == 2) {
