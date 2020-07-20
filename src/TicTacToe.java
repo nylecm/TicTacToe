@@ -43,13 +43,43 @@ public class TicTacToe {
 
     private static boolean isWin() {
         // True When 3 in a row.
-        for (GRID_STATUS gridPosition : ) {
+        for (GRID_STATUS[] gridRow : ) {
 
         }
     }
 
-    private static boolean isGridPositionOccupied(int gridPositionNumber) {
+    private static boolean isGridPositionOccupied() {
+        return gameBoard[][]
+    }
 
+
+
+    private static int convertPositionNumberToRowNumber(int gridPosition) {
+        if (gridPosition < 1 || gridPosition > 9) {
+            throw new IllegalArgumentException("Grid Position cannot be less " +
+                    "than 1 or more than 9.");
+        }
+            else if (gridPosition <= 3) {
+                return 0;
+        } else if (gridPosition <= 6) {
+                return 1;
+        } else {
+                return 2;
+        }
+    }
+
+    private static int convertPositionNumberToColumnNumber(int gridPosition) {
+        if (gridPosition < 1 || gridPosition > 9) {
+            throw new IllegalArgumentException("Grid Position cannot be less " +
+                    "than 1 or more than 9.");
+        }
+        else if (gridPosition % 3 == 1) {
+            return 0;
+        } else if (gridPosition % 3 == 2) {
+            return 1;
+        } else {
+            return 2;
+        }
     }
 
     private static void clearBoard() {
