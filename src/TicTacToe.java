@@ -8,7 +8,6 @@ public class TicTacToe {
     private enum GRID_STATUS {
         X_CLAIMED,
         O_CLAIMED,
-        UNCLAIMED
     }
 
     public static void main(String[] args) {
@@ -16,7 +15,6 @@ public class TicTacToe {
     }
 
     private static void playTicTacToe() {
-        clearBoard();
 
         System.out.println("Welcome to TicTacToe!\n");
 
@@ -28,7 +26,7 @@ public class TicTacToe {
         System.out.print("Please enter player 2's (O) name: ");
         player2Name = in.nextLine();
 
-        if (! isGameFinished()) {
+        if (!isGameFinished()) {
 
         }
     }
@@ -43,28 +41,29 @@ public class TicTacToe {
 
     private static boolean isWin() {
         // True When 3 in a row.
-        for (GRID_STATUS[] gridRow : ) {
+        for (GRID_STATUS[] gridRow :) {
 
         }
     }
 
-    private static boolean isGridPositionOccupied() {
+    private static boolean isGridPositionOccupied(int gridPosition) {
+        if (gameBoard[convertPositionNumberToRowNumber(gridPosition)][convertPositionNumberToColumnNumber(gridPosition)] == GRID_STATUS.UNCLAIMED) {
+            return true;
+        }
         return gameBoard[][]
     }
-
 
 
     private static int convertPositionNumberToRowNumber(int gridPosition) {
         if (gridPosition < 1 || gridPosition > 9) {
             throw new IllegalArgumentException("Grid Position cannot be less " +
                     "than 1 or more than 9.");
-        }
-            else if (gridPosition <= 3) {
-                return 0;
+        } else if (gridPosition <= 3) {
+            return 0;
         } else if (gridPosition <= 6) {
-                return 1;
+            return 1;
         } else {
-                return 2;
+            return 2;
         }
     }
 
@@ -72,21 +71,12 @@ public class TicTacToe {
         if (gridPosition < 1 || gridPosition > 9) {
             throw new IllegalArgumentException("Grid Position cannot be less " +
                     "than 1 or more than 9.");
-        }
-        else if (gridPosition % 3 == 1) {
+        } else if (gridPosition % 3 == 1) {
             return 0;
         } else if (gridPosition % 3 == 2) {
             return 1;
         } else {
             return 2;
-        }
-    }
-
-    private static void clearBoard() {
-        for (GRID_STATUS[] gridRow : gameBoard) {
-            for (GRID_STATUS gridPosition : gridRow) {
-                gridPosition = GRID_STATUS.UNCLAIMED;
-            }
         }
     }
 
