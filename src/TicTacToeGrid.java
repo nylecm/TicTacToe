@@ -13,11 +13,11 @@ public class TicTacToeGrid {
 
     }
 
-    public void markBoard(int gridPosition) throws IndexOutOfBoundsException, IllegalArgumentException {
+    public void markGrid(int gridPosition) throws IndexOutOfBoundsException, IllegalArgumentException {
         int row = convertPositionNumberToColumnNumber(gridPosition);
         int column = convertPositionNumberToColumnNumber(gridPosition);
 
-        if (isGridPositionOccupied(row, column)) {
+        if (!isGridPositionFree(row, column)) {
             throw new IllegalArgumentException("Grid Position already occupied.");
         }
 
@@ -59,13 +59,7 @@ public class TicTacToeGrid {
         }
     }
 
-    @Deprecated
-    public boolean isGridPositionOccupied(int gridPosition) {
-        return gameBoard[convertPositionNumberToRowNumber(gridPosition)]
-                [convertPositionNumberToColumnNumber(gridPosition)] == null;
-    }
-
-    public boolean isGridPositionOccupied(int gridRow, int gridColumn) {
+    public boolean isGridPositionFree(int gridRow, int gridColumn) {
         return gameBoard[gridRow][gridColumn] == null;
     }
 

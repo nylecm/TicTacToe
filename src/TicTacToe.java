@@ -42,13 +42,15 @@ public class TicTacToe {
 
                 if (playerInput.equals("I")) {
                     printInstructions();
-                } else if (true) {
-                    //TODO Place symbol code inside a try catch.
-                    isSymbolPlaced = true;
+                } else {
+                    try {
+                        grid.markGrid(Integer.parseInt(playerInput));
+                        isSymbolPlaced = true;
+                    } catch (IllegalArgumentException | IndexOutOfBoundsException ex) {
+                        System.out.println(ex.getMessage());
+                    }
                 }
             }
-
-
         }
 
         //game over.
