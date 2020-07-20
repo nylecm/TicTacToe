@@ -7,8 +7,7 @@ public class TicTacToe {
 
     private static GRID_STATUS[][] gameBoard = new
             GRID_STATUS[NUMBER_OF_ROWS_AND_COLUMNS][NUMBER_OF_ROWS_AND_COLUMNS];
-    private static String player1XName;
-    private static String player2OName;
+    private static String[] playerNames = new String[2];
 
     public static void main(String[] args) {
         playTicTacToe();
@@ -22,14 +21,14 @@ public class TicTacToe {
 
         Scanner in = new Scanner(System.in);
         System.out.print("Please enter player 1's (X) name: ");
-        player1XName = in.nextLine();
+        playerNames[0] = in.nextLine();
         System.out.print("Please enter player 2's (O) name: ");
-        player2OName = in.nextLine();
+        playerNames[1] = in.nextLine();
 
         TicTacToeGrid grid = new TicTacToeGrid();
 
         while (! grid.isGameFinished()) {
-            //gameplay loop
+
         }
 
         //game over.

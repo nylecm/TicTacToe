@@ -4,6 +4,23 @@ public class TicTacToeGrid {
             numberOfRowsAndColumns;
 
     private GRID_STATUS[][] gameBoard = new GRID_STATUS[numberOfRowsAndColumns][numberOfRowsAndColumns];
+    private int nextPlayer = 1;
+
+    public int getNextPlayer() {
+        return nextPlayer;
+    }
+
+    public void setNextPlayer(int nextPlayer) {
+        this.nextPlayer = nextPlayer;
+    }
+
+    public void incrementPlayer() {
+        if (nextPlayer == 1) {
+            nextPlayer++;
+        } else {
+            nextPlayer = 1;
+        }
+    }
 
     public TicTacToeGrid() {
 
