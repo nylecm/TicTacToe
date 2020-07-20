@@ -7,8 +7,8 @@ public class TicTacToe {
 
     private static GRID_STATUS[][] gameBoard = new
             GRID_STATUS[NUMBER_OF_ROWS_AND_COLUMNS][NUMBER_OF_ROWS_AND_COLUMNS];
-    private static String player1Name;
-    private static String player2Name;
+    private static String player1XName;
+    private static String player2OName;
 
     public static void main(String[] args) {
         playTicTacToe();
@@ -22,63 +22,17 @@ public class TicTacToe {
 
         Scanner in = new Scanner(System.in);
         System.out.print("Please enter player 1's (X) name: ");
-        player1Name = in.nextLine();
+        player1XName = in.nextLine();
         System.out.print("Please enter player 2's (O) name: ");
-        player2Name = in.nextLine();
+        player2OName = in.nextLine();
 
-        if (!isGameFinished()) {
+        TicTacToeGrid grid = new TicTacToeGrid();
 
+        while (! grid.isGameFinished()) {
+            //gameplay loop
         }
-    }
 
-    private static boolean isGameFinished() {
-        return isTie() || isWin();
-    }
-
-    private static boolean isTie() {
-        // True When there is no winning move possible.
-    }
-
-    private static boolean isWin() {
-        // True When 3 in a row.
-        for (GRID_STATUS[] gridRow : ) {
-
-        }
-    }
-
-    private static boolean isGridPositionOccupied(int gridPosition) {
-        return gameBoard[convertPositionNumberToRowNumber(gridPosition)]
-                [convertPositionNumberToColumnNumber(gridPosition)] == null;
-    }
-
-    private static boolean isGridPositionOccupied(int gridRow, int gridColumn) {
-        return gameBoard[gridRow][gridColumn] == null;
-    }
-
-    private static int convertPositionNumberToRowNumber(int gridPosition) {
-        if (gridPosition < 1 || gridPosition > MAX_GRID_POSITION) {
-            throw new IllegalArgumentException("Grid Position cannot be less " +
-                    "than 1 or more than " + MAX_GRID_POSITION + ".");
-        } else if (gridPosition <= 3) {
-            return 0;
-        } else if (gridPosition <= 6) {
-            return 1;
-        } else {
-            return 2;
-        }
-    }
-
-    private static int convertPositionNumberToColumnNumber(int gridPosition) {
-        if (gridPosition < 1 || gridPosition > MAX_GRID_POSITION) {
-            throw new IllegalArgumentException("Grid Position cannot be less " +
-                    "than 1 or more than " + MAX_GRID_POSITION + ".");
-        } else if (gridPosition % 3 == 1) {
-            return 0;
-        } else if (gridPosition % 3 == 2) {
-            return 1;
-        } else {
-            return 2;
-        }
+        //game over.
     }
 
     private static void printInstructions() {
