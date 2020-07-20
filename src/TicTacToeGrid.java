@@ -14,7 +14,7 @@ public class TicTacToeGrid {
     }
 
     public void markGrid(int gridPosition) throws IndexOutOfBoundsException, IllegalArgumentException {
-        int row = convertPositionNumberToColumnNumber(gridPosition);
+        int row = convertPositionNumberToRowNumber(gridPosition);
         int column = convertPositionNumberToColumnNumber(gridPosition);
 
         if (!isGridPositionFree(row, column)) {
