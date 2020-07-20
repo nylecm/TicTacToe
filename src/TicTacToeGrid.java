@@ -9,6 +9,66 @@ public class TicTacToeGrid {
     private GRID_STATUS[][] gameBoard = new GRID_STATUS[numberOfRowsAndColumns][numberOfRowsAndColumns];
     private int nextPlayer = 1;
 
+    public TicTacToeGrid() {
+
+    }
+
+    public void markBoard(int gridPosition) throws IndexOutOfBoundsException, IllegalArgumentException {
+        int row = convertPositionNumberToColumnNumber(gridPosition);
+        int column = convertPositionNumberToColumnNumber(gridPosition);
+
+        if (isGridPositionOccupied(row, column)) {
+            throw new IllegalArgumentException("Grid Position already occupied.");
+        }
+
+        GRID_STATUS markToBeMade;
+        if (getNextPlayer() == 1) {
+            markToBeMade = GRID_STATUS.X_CLAIMED;
+        } else {
+            markToBeMade = GRID_STATUS.O_CLAIMED;
+        }
+
+        gameBoard[row][column] = markToBeMade;
+
+        incrementPlayer();
+    }
+
+    public int convertPositionNumberToRowNumber(int gridPosition) throws IllegalArgumentException {
+        if (gridPosition < 1 || gridPosition > maxGridPosition) {
+            throw new IndexOutOfBoundsException("Grid Position cannot be less " +
+                    "than 1 or more than " + maxGridPosition + ".");
+        } else if (gridPosition <= 3) {
+            return 0;
+        } else if (gridPosition <= 6) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
+    public int convertPositionNumberToColumnNumber(int gridPosition) throws IllegalArgumentException {
+        if (gridPosition < 1 || gridPosition > maxGridPosition) {
+            throw new IndexOutOfBoundsException("Grid Position cannot be less " +
+                    "than 1 or more than " + maxGridPosition + ".");
+        } else if (gridPosition % 3 == 1) {
+            return 0;
+        } else if (gridPosition % 3 == 2) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
+    @Deprecated
+    public boolean isGridPositionOccupied(int gridPosition) {
+        return gameBoard[convertPositionNumberToRowNumber(gridPosition)]
+                [convertPositionNumberToColumnNumber(gridPosition)] == null;
+    }
+
+    public boolean isGridPositionOccupied(int gridRow, int gridColumn) {
+        return gameBoard[gridRow][gridColumn] == null;
+    }
+
     public int getNextPlayer() {
         return nextPlayer;
     }
@@ -23,10 +83,6 @@ public class TicTacToeGrid {
         } else {
             nextPlayer = 1;
         }
-    }
-
-    public TicTacToeGrid() {
-
     }
 
     public boolean isGameFinished() {
@@ -87,42 +143,6 @@ public class TicTacToeGrid {
             }
         }
         return true;
-    }
-
-    @Deprecated
-    public boolean isGridPositionOccupied(int gridPosition) {
-        return gameBoard[convertPositionNumberToRowNumber(gridPosition)]
-                [convertPositionNumberToColumnNumber(gridPosition)] == null;
-    }
-
-    public boolean isGridPositionOccupied(int gridRow, int gridColumn) {
-        return gameBoard[gridRow][gridColumn] == null;
-    }
-
-    public int convertPositionNumberToRowNumber(int gridPosition) {
-        if (gridPosition < 1 || gridPosition > maxGridPosition) {
-            throw new IllegalArgumentException("Grid Position cannot be less " +
-                    "than 1 or more than " + maxGridPosition + ".");
-        } else if (gridPosition <= 3) {
-            return 0;
-        } else if (gridPosition <= 6) {
-            return 1;
-        } else {
-            return 2;
-        }
-    }
-
-    public int convertPositionNumberToColumnNumber(int gridPosition) {
-        if (gridPosition < 1 || gridPosition > maxGridPosition) {
-            throw new IllegalArgumentException("Grid Position cannot be less " +
-                    "than 1 or more than " + maxGridPosition + ".");
-        } else if (gridPosition % 3 == 1) {
-            return 0;
-        } else if (gridPosition % 3 == 2) {
-            return 1;
-        } else {
-            return 2;
-        }
     }
 
     public String toString() {
