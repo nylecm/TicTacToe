@@ -10,20 +10,63 @@ public class TicTacToeGrid {
     }
 
     public boolean isGameFinished() {
-        return isWin() || isTie();
+        return isWin(); //TODO add tie condition
     }
 
-    private boolean isTie() {
+    /*private boolean isTie() {
 
-    }
+    }*/
 
     private boolean isWin() {
         // True When 3 in a row.
         for (GRID_STATUS[] gridRow : gameBoard) {
-            if (isEveryGridPositionSame()) {
-
+            if (isEveryGridPositionSame(gridRow)) {
+                return true;
             }
         }
+
+        for (int i = 0; i < numberOfRowsAndColumns; i++) {
+            GRID_STATUS[] gridColumn = new GRID_STATUS[numberOfRowsAndColumns];
+            for (int j = 0; j < numberOfRowsAndColumns; j++) {
+                gridColumn[j] = gameBoard[i][j];
+                if(isEveryGridPositionSame(gridColumn)) {
+                    return true;
+                }
+            }
+        }
+
+        //Diagonal win:
+        GRID_STATUS[] diagonalLineDown = new GRID_STATUS[3];
+        diagonalLineDown[0] = gameBoard[0][0];
+        diagonalLineDown[1] = gameBoard[1][1];
+        diagonalLineDown[2] = gameBoard[2][2];
+
+
+        if (isEveryGridPositionSame(diagonalLineDown)) {
+            return true;
+        }
+
+        GRID_STATUS[] diagonalLineUp = new GRID_STATUS[3];
+        diagonalLineUp[0] = gameBoard[2][2];
+        diagonalLineUp[1] = gameBoard[1][1];
+        diagonalLineUp[2] = gameBoard[0][0];
+
+
+        if (isEveryGridPositionSame(diagonalLineUp)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isEveryGridPositionSame(GRID_STATUS[] gridLine) {
+        GRID_STATUS lastGridPosition = gridLine[0];
+        for (int i = 1; i < numberOfRowsAndColumns; i++) {
+            if (gridLine[i] != lastGridPosition || gridLine[i] == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Deprecated
