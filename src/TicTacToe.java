@@ -16,6 +16,8 @@ public class TicTacToe {
     }
 
     private static void playTicTacToe() {
+        clearBoard();
+
         System.out.println("Welcome to TicTacToe!\n");
 
         printInstructions();
@@ -25,18 +27,37 @@ public class TicTacToe {
         player1Name = in.nextLine();
         System.out.print("Please enter player 2's (O) name: ");
         player2Name = in.nextLine();
+
+        if (! isGameFinished()) {
+
+        }
     }
 
-    private boolean isGameOver() {
+    private static boolean isGameFinished() {
+        return isTie() || isWin();
+    }
+
+    private static boolean isTie() {
+        // True When there is no winning move possible.
+    }
+
+    private static boolean isWin() {
+        // True When 3 in a row.
+        for (GRID_STATUS gridPosition : ) {
+
+        }
+    }
+
+    private static boolean isGridPositionOccupied(int gridPositionNumber) {
 
     }
 
-    private boolean isTie() {
-        // True When:
-    }
-
-    private boolean isWin() {
-        // True When
+    private static void clearBoard() {
+        for (GRID_STATUS[] gridRow : gameBoard) {
+            for (GRID_STATUS gridPosition : gridRow) {
+                gridPosition = GRID_STATUS.UNCLAIMED;
+            }
+        }
     }
 
     private static void printInstructions() {
