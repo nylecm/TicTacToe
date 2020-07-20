@@ -1,12 +1,6 @@
 import java.util.Scanner;
 
 public class TicTacToe {
-    private static final int NUMBER_OF_ROWS_AND_COLUMNS = 3;
-    private static final int MAX_GRID_POSITION = NUMBER_OF_ROWS_AND_COLUMNS *
-            NUMBER_OF_ROWS_AND_COLUMNS;
-
-    private static GRID_STATUS[][] gameBoard = new
-            GRID_STATUS[NUMBER_OF_ROWS_AND_COLUMNS][NUMBER_OF_ROWS_AND_COLUMNS];
     private static String[] playerNames = new String[2];
 
     public static void main(String[] args) {
