@@ -26,9 +26,10 @@ public class TicTacToe {
         PLAYER_NAMES[1] = in.nextLine();
 
         TicTacToeGrid grid = new TicTacToeGrid();
+        boolean isGameFinished = false;
 
         //Main gameplay loop:
-        while (!grid.isGameFinished()) {
+        while (!isGameFinished) {
             if (grid.getNextPlayer() == 1) {
                 System.out.print(PLAYER_NAMES[0] + "'s go enter position number " +
                         "to place your cross:");
@@ -49,9 +50,15 @@ public class TicTacToe {
                 } else {
                     try {
                         grid.markGrid(Integer.parseInt(playerInput));
-                        grid.incrementPlayer();
                         isSymbolPlaced = true;
                         System.out.println(grid.toString());
+
+                        if (grid.isGameFinished()) {
+                            isGameFinished = true;
+                        } else {
+                            grid.incrementPlayer();
+                        }
+
                     } catch (IllegalArgumentException | IndexOutOfBoundsException ex) {
                         System.out.println(ex.getMessage());
                         System.out.println(INPUT_PROMPT);
@@ -59,9 +66,8 @@ public class TicTacToe {
                 }
             }
 
-            System.out.println(grid.getNextPlayer());
         }
-
+        System.out.println("Player " + grid.getNextPlayer() + " wins.");
         //game over.
     }
 
