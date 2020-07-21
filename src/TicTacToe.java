@@ -4,7 +4,10 @@ import java.util.Scanner;
  * @author nylecm
  */
 public class TicTacToe {
-    private static final String[] playerNames = new String[2];
+    private static final int NUM_OF_PAYERS = 2;
+    private static final String[] PLAYER_NAMES = new String[NUM_OF_PAYERS];
+    private static final String INPUT_PROMPT = "Input position number, or press I for instructions.";
+
 
     public static void main(String[] args) {
         playTicTacToe();
@@ -18,19 +21,19 @@ public class TicTacToe {
 
         Scanner in = new Scanner(System.in);
         System.out.print("Please enter player 1's (X) name: ");
-        playerNames[0] = in.nextLine();
+        PLAYER_NAMES[0] = in.nextLine();
         System.out.print("Please enter player 2's (O) name: ");
-        playerNames[1] = in.nextLine();
+        PLAYER_NAMES[1] = in.nextLine();
 
         TicTacToeGrid grid = new TicTacToeGrid();
 
-        //Main gameplay loop
+        //Main gameplay loop:
         while (!grid.isGameFinished()) {
             if (grid.getNextPlayer() == 1) {
-                System.out.print(playerNames[0] + "'s go enter position number " +
+                System.out.print(PLAYER_NAMES[0] + "'s go enter position number " +
                         "to place your cross:");
             } else {
-                System.out.print(playerNames[1] + "'s go enter position number " +
+                System.out.print(PLAYER_NAMES[1] + "'s go enter position number " +
                         "to place your nought:");
             }
 
@@ -42,19 +45,19 @@ public class TicTacToe {
 
                 if (playerInput.equals("I")) {
                     printInstructions();
+                    System.out.println(INPUT_PROMPT);
                 } else {
                     try {
                         grid.markGrid(Integer.parseInt(playerInput));
+                        grid.isWinningMove(Integer.parseInt(playerInput));
                         grid.incrementPlayer();
                         isSymbolPlaced = true;
+                        System.out.println(grid.toString());
                     } catch (IllegalArgumentException | IndexOutOfBoundsException ex) {
                         System.out.println(ex.getMessage());
-                        System.out.println("Input position number, or press I " +
-                                "for instructions.");
+                        System.out.println(INPUT_PROMPT);
                     }
                 }
-                System.out.println(grid.toString());
-
             }
         }
 

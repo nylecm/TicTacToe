@@ -31,7 +31,14 @@ public class TicTacToeGrid {
         gameBoard[row][column] = markToBeMade;
     }
 
-    private int convertPositionNumberToRowNumber(int gridPosition) throws IllegalArgumentException {
+    public boolean isWinningMove(int gridPosition) throws IndexOutOfBoundsException {
+        int row = convertPositionNumberToRowNumber(gridPosition);
+        int column = convertPositionNumberToColumnNumber(gridPosition);
+
+
+    }
+
+    private int convertPositionNumberToRowNumber(int gridPosition) throws IndexOutOfBoundsException {
         if (gridPosition < 1 || gridPosition > maxGridPosition) {
             throw new IndexOutOfBoundsException("Grid Position cannot be less " +
                     "than 1 or more than " + maxGridPosition + ".");
@@ -73,12 +80,11 @@ public class TicTacToeGrid {
         }
     }
 
+
     //FIXME
     public boolean isGameFinished() {
-        return false;
-        // return isWin(); //TODO add tie condition
+        return isWin(); //TODO add tie condition
     }
-
     /*private boolean isTie() {
 
     }*/
