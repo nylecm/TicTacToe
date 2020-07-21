@@ -3,11 +3,12 @@
  */
 public class TicTacToeGrid {
     public final int numberOfRowsAndColumns = 3;
-    public final int maxGridPosition = numberOfRowsAndColumns *
+    public final int numberOfGridPositions = numberOfRowsAndColumns *
             numberOfRowsAndColumns;
 
     private GRID_STATUS[][] gameBoard = new GRID_STATUS[numberOfRowsAndColumns][numberOfRowsAndColumns];
     private int nextPlayer = 1;
+    private int numberOfMarks = 0;
 
     public TicTacToeGrid() {
         unsetAllPositions();
@@ -27,21 +28,14 @@ public class TicTacToeGrid {
         } else {
             markToBeMade = GRID_STATUS.O_CLAIMED;
         }
-
         gameBoard[row][column] = markToBeMade;
-    }
-
-    public boolean isWinningMove(int gridPosition) throws IndexOutOfBoundsException {
-        int row = convertPositionNumberToRowNumber(gridPosition);
-        int column = convertPositionNumberToColumnNumber(gridPosition);
-
-
+        numberOfMarks++;
     }
 
     private int convertPositionNumberToRowNumber(int gridPosition) throws IndexOutOfBoundsException {
-        if (gridPosition < 1 || gridPosition > maxGridPosition) {
+        if (gridPosition < 1 || gridPosition > numberOfGridPositions) {
             throw new IndexOutOfBoundsException("Grid Position cannot be less " +
-                    "than 1 or more than " + maxGridPosition + ".");
+                    "than 1 or more than " + numberOfGridPositions + ".");
         } else if (gridPosition <= 3) {
             return 0;
         } else if (gridPosition <= 6) {
@@ -52,9 +46,9 @@ public class TicTacToeGrid {
     }
 
     private int convertPositionNumberToColumnNumber(int gridPosition) throws IllegalArgumentException {
-        if (gridPosition < 1 || gridPosition > maxGridPosition) {
+        if (gridPosition < 1 || gridPosition > numberOfGridPositions) {
             throw new IndexOutOfBoundsException("Grid Position cannot be less " +
-                    "than 1 or more than " + maxGridPosition + ".");
+                    "than 1 or more than " + numberOfGridPositions + ".");
         } else if (gridPosition % 3 == 1) {
             return 0;
         } else if (gridPosition % 3 == 2) {
@@ -80,14 +74,10 @@ public class TicTacToeGrid {
         }
     }
 
-
     //FIXME
     public boolean isGameFinished() {
-        return isWin(); //TODO add tie condition
+        return isWin() || numberOfMarks >= numberOfGridPositions; //TODO add tie condition
     }
-    /*private boolean isTie() {
-
-    }*/
 
     private boolean isWin() {
         // True When 3 in a row.
@@ -97,13 +87,15 @@ public class TicTacToeGrid {
             }
         }
 
-        for (int i = 0; i < numberOfRowsAndColumns; i++) {
+        for (int i = 0; i < numberOfRowsAndColumns; i++) { //For top item in column:
             GRID_STATUS[] gridColumn = new GRID_STATUS[numberOfRowsAndColumns];
-            for (int j = 0; j < numberOfRowsAndColumns; j++) {
-                gridColumn[j] = gameBoard[i][j];
-                if (isEveryMarkInGridLineSame(gridColumn)) {
-                    return true;
-                }
+            gridColumn[0] = gameBoard[0][i];
+            //loop down 2 more times and add to array.
+            for (int j = 1; j < numberOfRowsAndColumns; j++) {
+                gridColumn[j] = gameBoard[j][i];
+            }
+            if (isEveryMarkInGridLineSame(gridColumn)) {
+                return true;
             }
         }
 
@@ -158,6 +150,4 @@ public class TicTacToeGrid {
         String l5 = "\t" + gameBoard[2][0].toString() + "\t|\t" + gameBoard[2][1].toString() + "\t|\t" + gameBoard[2][2].toString() + "\t";
         return l1 + l2 + l3 + l4 + l5;
     }
-
-
 }

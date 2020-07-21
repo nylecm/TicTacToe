@@ -49,7 +49,6 @@ public class TicTacToe {
                 } else {
                     try {
                         grid.markGrid(Integer.parseInt(playerInput));
-                        grid.isWinningMove(Integer.parseInt(playerInput));
                         grid.incrementPlayer();
                         isSymbolPlaced = true;
                         System.out.println(grid.toString());
@@ -59,6 +58,8 @@ public class TicTacToe {
                     }
                 }
             }
+
+            System.out.println(grid.getNextPlayer());
         }
 
         //game over.
