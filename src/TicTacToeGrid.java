@@ -10,7 +10,7 @@ public class TicTacToeGrid {
     private int nextPlayer = 1;
 
     public TicTacToeGrid() {
-
+        unsetAllPositions();
     }
 
     public void markGrid(int gridPosition) throws IndexOutOfBoundsException, IllegalArgumentException {
@@ -58,7 +58,7 @@ public class TicTacToeGrid {
     }
 
     private boolean isGridPositionFree(int gridRow, int gridColumn) {
-        return gameBoard[gridRow][gridColumn] == null;
+        return gameBoard[gridRow][gridColumn] == GRID_STATUS.UNCLAIMED;
     }
 
     public int getNextPlayer() {
@@ -85,7 +85,7 @@ public class TicTacToeGrid {
     private boolean isWin() {
         // True When 3 in a row.
         for (GRID_STATUS[] gridRow : gameBoard) {
-            if (isEveryGridPositionSame(gridRow)) {
+            if (isEveryMarkInGridLineSame(gridRow)) {
                 return true;
             }
         }
@@ -94,7 +94,7 @@ public class TicTacToeGrid {
             GRID_STATUS[] gridColumn = new GRID_STATUS[numberOfRowsAndColumns];
             for (int j = 0; j < numberOfRowsAndColumns; j++) {
                 gridColumn[j] = gameBoard[i][j];
-                if(isEveryGridPositionSame(gridColumn)) {
+                if (isEveryMarkInGridLineSame(gridColumn)) {
                     return true;
                 }
             }
@@ -107,7 +107,7 @@ public class TicTacToeGrid {
         diagonalLineDown[2] = gameBoard[2][2];
 
 
-        if (isEveryGridPositionSame(diagonalLineDown)) {
+        if (isEveryMarkInGridLineSame(diagonalLineDown)) {
             return true;
         }
 
@@ -117,21 +117,29 @@ public class TicTacToeGrid {
         diagonalLineUp[2] = gameBoard[0][0];
 
 
-        if (isEveryGridPositionSame(diagonalLineUp)) {
+        if (isEveryMarkInGridLineSame(diagonalLineUp)) {
             return true;
         }
 
         return false;
     }
 
-    private boolean isEveryGridPositionSame(GRID_STATUS[] gridLine) {
+    private boolean isEveryMarkInGridLineSame(GRID_STATUS[] gridLine) {
         GRID_STATUS lastGridPosition = gridLine[0];
         for (int i = 1; i < numberOfRowsAndColumns; i++) {
-            if (gridLine[i] != lastGridPosition || gridLine[i] == null) {
+            if (gridLine[i] != lastGridPosition || gridLine[i] == GRID_STATUS.UNCLAIMED) {
                 return false;
             }
         }
         return true;
+    }
+
+    public void unsetAllPositions() {
+        for (GRID_STATUS[] gridRow : gameBoard) {
+            for (GRID_STATUS gridPosition : gridRow) {
+                gridPosition = GRID_STATUS.UNCLAIMED;
+            }
+        }
     }
 
     @Override
