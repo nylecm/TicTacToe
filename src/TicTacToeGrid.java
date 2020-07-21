@@ -73,14 +73,15 @@ public class TicTacToeGrid {
         }
     }
 
+    //FIXME
     public boolean isGameFinished() {
-        return isWin(); //TODO add tie condition
+        return false;
+        // return isWin(); //TODO add tie condition
     }
 
     /*private boolean isTie() {
 
     }*/
-
 
     private boolean isWin() {
         // True When 3 in a row.
@@ -135,20 +136,20 @@ public class TicTacToeGrid {
     }
 
     public void unsetAllPositions() {
-        for (GRID_STATUS[] gridRow : gameBoard) {
-            for (GRID_STATUS gridPosition : gridRow) {
-                gridPosition = GRID_STATUS.UNCLAIMED;
+        for (int i = 0; i < numberOfRowsAndColumns; i++) {
+            for (int j = 0; j < numberOfRowsAndColumns; j++) {
+                gameBoard[i][j] = GRID_STATUS.UNCLAIMED;
             }
         }
     }
 
     @Override
     public String toString() {
-        String l1 = "\t" + gameBoard[0][0].toString() + "\t|\t" + gameBoard[0][1] + "\t|\t" + gameBoard[0][2] + "\t\n";
+        String l1 = "\t" + gameBoard[0][0].toString() + "\t|\t" + gameBoard[0][1].toString() + "\t|\t" + gameBoard[0][2].toString() + "\t\n";
         String l2 = "  ------|-------|------\n";
-        String l3 = "\t" + gameBoard[1][0] + "\t|\t" + gameBoard[1][1] + "\t|\t" + gameBoard[1][2] + "\t\n";
+        String l3 = "\t" + gameBoard[1][0].toString() + "\t|\t" + gameBoard[1][1].toString() + "\t|\t" + gameBoard[1][2].toString() + "\t\n";
         String l4 = "  ------|-------|------\n";
-        String l5 = "\t" + gameBoard[2][0] + "\t|\t" + gameBoard[2][1] + "\t|\t" + gameBoard[2][2] + "\t";
+        String l5 = "\t" + gameBoard[2][0].toString() + "\t|\t" + gameBoard[2][1].toString() + "\t|\t" + gameBoard[2][2].toString() + "\t";
         return l1 + l2 + l3 + l4 + l5;
     }
 
