@@ -24,6 +24,7 @@ public class TicTacToe {
 
         TicTacToeGrid grid = new TicTacToeGrid();
 
+        //Main gameplay loop
         while (!grid.isGameFinished()) {
             if (grid.getNextPlayer() == 1) {
                 System.out.print(playerNames[0] + "'s go enter position number " +
@@ -36,7 +37,6 @@ public class TicTacToe {
             String playerInput;
             boolean isSymbolPlaced = false;
 
-            //Main gameplay loop
             while (!isSymbolPlaced) {
                 playerInput = in.nextLine();
 
