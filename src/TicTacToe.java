@@ -45,11 +45,16 @@ public class TicTacToe {
                 } else {
                     try {
                         grid.markGrid(Integer.parseInt(playerInput));
+                        grid.incrementPlayer();
                         isSymbolPlaced = true;
                     } catch (IllegalArgumentException | IndexOutOfBoundsException ex) {
                         System.out.println(ex.getMessage());
+                        System.out.println("Input position number, or press I " +
+                                "for instructions.");
                     }
                 }
+                System.out.println(grid.toString());
+
             }
         }
 

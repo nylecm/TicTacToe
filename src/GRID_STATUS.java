@@ -2,6 +2,9 @@
  * @author nylecm
  */
 public enum GRID_STATUS {
-    X_CLAIMED,
+    X_CLAIMED {
+
+    },
     O_CLAIMED,
+    ;
 }

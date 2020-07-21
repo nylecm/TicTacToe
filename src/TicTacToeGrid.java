@@ -29,11 +29,9 @@ public class TicTacToeGrid {
         }
 
         gameBoard[row][column] = markToBeMade;
-
-        incrementPlayer();
     }
 
-    public int convertPositionNumberToRowNumber(int gridPosition) throws IllegalArgumentException {
+    private int convertPositionNumberToRowNumber(int gridPosition) throws IllegalArgumentException {
         if (gridPosition < 1 || gridPosition > maxGridPosition) {
             throw new IndexOutOfBoundsException("Grid Position cannot be less " +
                     "than 1 or more than " + maxGridPosition + ".");
@@ -46,7 +44,7 @@ public class TicTacToeGrid {
         }
     }
 
-    public int convertPositionNumberToColumnNumber(int gridPosition) throws IllegalArgumentException {
+    private int convertPositionNumberToColumnNumber(int gridPosition) throws IllegalArgumentException {
         if (gridPosition < 1 || gridPosition > maxGridPosition) {
             throw new IndexOutOfBoundsException("Grid Position cannot be less " +
                     "than 1 or more than " + maxGridPosition + ".");
@@ -59,16 +57,12 @@ public class TicTacToeGrid {
         }
     }
 
-    public boolean isGridPositionFree(int gridRow, int gridColumn) {
+    private boolean isGridPositionFree(int gridRow, int gridColumn) {
         return gameBoard[gridRow][gridColumn] == null;
     }
 
     public int getNextPlayer() {
         return nextPlayer;
-    }
-
-    public void setNextPlayer(int nextPlayer) {
-        this.nextPlayer = nextPlayer;
     }
 
     public void incrementPlayer() {
@@ -86,6 +80,7 @@ public class TicTacToeGrid {
     /*private boolean isTie() {
 
     }*/
+
 
     private boolean isWin() {
         // True When 3 in a row.
@@ -139,7 +134,15 @@ public class TicTacToeGrid {
         return true;
     }
 
+    @Override
     public String toString() {
-        return gameBoard.toString(); //TODO game board toString
+        String l1 = "\t" + gameBoard[0][0].toString() + "\t|\t" + gameBoard[0][1] + "\t|\t" + gameBoard[0][2] + "\t\n";
+        String l2 = "  ------|-------|------\n";
+        String l3 = "\t" + gameBoard[1][0] + "\t|\t" + gameBoard[1][1] + "\t|\t" + gameBoard[1][2] + "\t\n";
+        String l4 = "  ------|-------|------\n";
+        String l5 = "\t" + gameBoard[2][0] + "\t|\t" + gameBoard[2][1] + "\t|\t" + gameBoard[2][2] + "\t";
+        return l1 + l2 + l3 + l4 + l5;
     }
+
+
 }
