@@ -71,6 +71,7 @@ public class TicTacToe {
 
             boolean isSymbolPlaced = false; // True when the player marks the board.
 
+            // Player input loop:
             while (!isSymbolPlaced) {
                 playerInput = in.nextLine();
 
