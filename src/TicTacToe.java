@@ -75,32 +75,36 @@ public class TicTacToe {
             while (!isSymbolPlaced) {
                 playerInput = in.nextLine();
 
-
+                // Interprets player input:
                 if (playerInput.equals(INSTRUCTIONS_WORD_FIRST_LETTER)) {
                     printInstructions();
                     System.out.println(INPUT_PROMPT);
-                } else {
+                } else { // All inputs except above indicate the user wants to mark the grid.
                     try {
                         grid.markGrid(Integer.parseInt(playerInput));
+                        // Successfully entered a grid position:
                         isSymbolPlaced = true;
-                        System.out.println(grid.toString());
-                    } catch (NumberFormatException ex) {
+                    } catch (NumberFormatException ex) { // Number Parsed Incorrectly.
                         System.out.println("Please enter an integer or a valid " +
                                 "character such as " + INSTRUCTIONS_WORD_FIRST_LETTER + ".");
                         System.out.println(INPUT_PROMPT);
                     } catch (IndexOutOfBoundsException | IllegalArgumentException ex) {
+                        // Either grid position number out-of-range, or position
+                        // already occupied.
                         System.out.println(ex.getMessage());
                         System.out.println(INPUT_PROMPT);
                     }
 
                     if (isSymbolPlaced && grid.isGameFinished()) {
                         isGameFinished = true;
-                    } else {
+                    } else { // Game continues.
+                        System.out.println(grid.toString());
                         grid.incrementPlayer();
                     }
                 }
             }
         }
+        //TODO Improve game finished message.
         System.out.println("Player " + grid.getNextPlayer() + " wins.");
         // Game Finished.
     }
