@@ -4,17 +4,16 @@
  * @author nylecm
  */
 public class TicTacToeGrid {
-    /**
-     * The Number of rows and columns.
-     */
-    public final int numberOfRowsAndColumns = 3;
-    /**
-     * The Number of grid positions.
-     */
-    public final int numberOfGridPositions = numberOfRowsAndColumns *
-            numberOfRowsAndColumns;
 
-    private GRID_STATUS[][] gameBoard = new GRID_STATUS[numberOfRowsAndColumns][numberOfRowsAndColumns];
+    // Configures size of a grid:
+    private final int numberOfRowsAndColumns = 3;
+    private final int numberOfGridPositions =
+            numberOfRowsAndColumns * numberOfRowsAndColumns;
+
+    // Represents a tic-tac-toe grid:
+    private GRID_STATUS[][] grid =
+            new GRID_STATUS[numberOfRowsAndColumns][numberOfRowsAndColumns];
+
     private int nextPlayer = 1;
     private int numberOfMarks = 0;
 
@@ -22,7 +21,7 @@ public class TicTacToeGrid {
      * Instantiates a new Tic tac toe grid.
      */
     public TicTacToeGrid() {
-        unsetAllPositions();
+        unclaimAllPositions();
     }
 
     /**
@@ -46,7 +45,7 @@ public class TicTacToeGrid {
         } else {
             markToBeMade = GRID_STATUS.O_CLAIMED;
         }
-        gameBoard[row][column] = markToBeMade;
+        grid[row][column] = markToBeMade;
         numberOfMarks++;
     }
 
@@ -77,7 +76,7 @@ public class TicTacToeGrid {
     }
 
     private boolean isGridPositionFree(int gridRow, int gridColumn) {
-        return gameBoard[gridRow][gridColumn] == GRID_STATUS.UNCLAIMED;
+        return grid[gridRow][gridColumn] == GRID_STATUS.UNCLAIMED;
     }
 
     /**
@@ -112,7 +111,7 @@ public class TicTacToeGrid {
 
     private boolean isWin() {
         // True When 3 in a row.
-        for (GRID_STATUS[] gridRow : gameBoard) {
+        for (GRID_STATUS[] gridRow : grid) {
             if (isEveryMarkInGridLineSame(gridRow)) {
                 return true;
             }
@@ -120,10 +119,10 @@ public class TicTacToeGrid {
 
         for (int i = 0; i < numberOfRowsAndColumns; i++) { //For top item in column:
             GRID_STATUS[] gridColumn = new GRID_STATUS[numberOfRowsAndColumns];
-            gridColumn[0] = gameBoard[0][i];
+            gridColumn[0] = grid[0][i];
             //loop down 2 more times and add to array.
             for (int j = 1; j < numberOfRowsAndColumns; j++) {
-                gridColumn[j] = gameBoard[j][i];
+                gridColumn[j] = grid[j][i];
             }
             if (isEveryMarkInGridLineSame(gridColumn)) {
                 return true;
@@ -132,9 +131,9 @@ public class TicTacToeGrid {
 
         //Diagonal win:
         GRID_STATUS[] diagonalLineDown = new GRID_STATUS[3];
-        diagonalLineDown[0] = gameBoard[0][0];
-        diagonalLineDown[1] = gameBoard[1][1];
-        diagonalLineDown[2] = gameBoard[2][2];
+        diagonalLineDown[0] = grid[0][0];
+        diagonalLineDown[1] = grid[1][1];
+        diagonalLineDown[2] = grid[2][2];
 
 
         if (isEveryMarkInGridLineSame(diagonalLineDown)) {
@@ -142,9 +141,9 @@ public class TicTacToeGrid {
         }
 
         GRID_STATUS[] diagonalLineUp = new GRID_STATUS[3];
-        diagonalLineUp[0] = gameBoard[2][2];
-        diagonalLineUp[1] = gameBoard[1][1];
-        diagonalLineUp[2] = gameBoard[0][0];
+        diagonalLineUp[0] = grid[2][2];
+        diagonalLineUp[1] = grid[1][1];
+        diagonalLineUp[2] = grid[0][0];
 
 
         if (isEveryMarkInGridLineSame(diagonalLineUp)) {
@@ -167,21 +166,21 @@ public class TicTacToeGrid {
     /**
      * Unset all positions.
      */
-    public void unsetAllPositions() {
+    public void unclaimAllPositions() {
         for (int i = 0; i < numberOfRowsAndColumns; i++) {
             for (int j = 0; j < numberOfRowsAndColumns; j++) {
-                gameBoard[i][j] = GRID_STATUS.UNCLAIMED;
+                grid[i][j] = GRID_STATUS.UNCLAIMED;
             }
         }
     }
 
     @Override
     public String toString() {
-        String l1 = "\t" + gameBoard[0][0].toString() + "\t|\t" + gameBoard[0][1].toString() + "\t|\t" + gameBoard[0][2].toString() + "\t\n";
+        String l1 = "\t" + grid[0][0].toString() + "\t|\t" + grid[0][1].toString() + "\t|\t" + grid[0][2].toString() + "\t\n";
         String l2 = "  ------|-------|------\n";
-        String l3 = "\t" + gameBoard[1][0].toString() + "\t|\t" + gameBoard[1][1].toString() + "\t|\t" + gameBoard[1][2].toString() + "\t\n";
+        String l3 = "\t" + grid[1][0].toString() + "\t|\t" + grid[1][1].toString() + "\t|\t" + grid[1][2].toString() + "\t\n";
         String l4 = "  ------|-------|------\n";
-        String l5 = "\t" + gameBoard[2][0].toString() + "\t|\t" + gameBoard[2][1].toString() + "\t|\t" + gameBoard[2][2].toString() + "\t";
+        String l5 = "\t" + grid[2][0].toString() + "\t|\t" + grid[2][1].toString() + "\t|\t" + grid[2][2].toString() + "\t";
         return l1 + l2 + l3 + l4 + l5;
     }
 }
