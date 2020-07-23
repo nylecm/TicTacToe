@@ -113,7 +113,9 @@ public class TicTacToe {
                     System.out.println(INPUT_PROMPT);
                 }
 
-                if (isSymbolPlaced && grid.isGameFinished()) {
+                if (isSymbolPlaced && grid.isMaxMovesMade()) {
+                    isGameFinished = true;
+                } else if (isSymbolPlaced && grid.isWin()) {
                     isGameFinished = true;
                 } else { // Game continues.
                     System.out.println(grid.toString());

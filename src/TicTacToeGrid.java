@@ -99,17 +99,7 @@ public class TicTacToeGrid {
         }
     }
 
-    /**
-     * Is game finished boolean.
-     *
-     * @return the boolean
-     */
-//FIXME
-    public boolean isGameFinished() {
-        return isWin() || numberOfMarks >= numberOfGridPositions; //TODO add tie condition
-    }
-
-    private boolean isWin() {
+    public boolean isWin() {
         // True When 3 in a row.
         for (GRID_STATUS[] gridRow : grid) {
             if (isEveryMarkInGridLineSame(gridRow)) {
@@ -151,6 +141,10 @@ public class TicTacToeGrid {
         }
 
         return false;
+    }
+
+    public boolean isMaxMovesMade() {
+        return numberOfMarks >= 9;
     }
 
     private boolean isEveryMarkInGridLineSame(GRID_STATUS[] gridLine) {
