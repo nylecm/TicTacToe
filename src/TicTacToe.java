@@ -4,6 +4,10 @@ import java.util.Properties;
 import java.util.Scanner;
 
 /**
+ * The type Tic tac toe, which handles the gameplay sequence of the game.
+ * <p>
+ * Currently the game supports two human players.
+ *
  * @author nylecm
  */
 public class TicTacToe {
@@ -27,16 +31,24 @@ public class TicTacToe {
     private static final String INPUT_PROMPT = "Input position number, or press" +
             " I for instructions.";
 
-
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         playTicTacToe();
     }
 
+    /**
+     * Contains the main gameplay sequence for the game.
+     */
     private static void playTicTacToe() {
         System.out.println(WELCOME_PROMPT);
 
         printInstructions();
 
+        //Players name input:
         Scanner in = new Scanner(System.in);
         System.out.print(PLAYER_1_NAME_PROMPT);
         PLAYER_NAMES[0] = in.nextLine();
@@ -44,9 +56,11 @@ public class TicTacToe {
         PLAYER_NAMES[1] = in.nextLine();
 
         TicTacToeGrid grid = new TicTacToeGrid();
+
+        // True when it's determined that the game should end.
         boolean isGameFinished = false;
 
-        //Main gameplay loop:
+        // Main gameplay loop:
         while (!isGameFinished) {
             if (grid.getNextPlayer() == 1) {
                 System.out.print(PLAYER_NAMES[0] + INPUT_PROMPT_FIRST_ATTEMPT +
@@ -57,7 +71,8 @@ public class TicTacToe {
             }
 
             String playerInput;
-            boolean isSymbolPlaced = false;
+
+            boolean isSymbolPlaced = false; // True when the player marks the board.
 
             while (!isSymbolPlaced) {
                 playerInput = in.nextLine();
