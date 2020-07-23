@@ -8,11 +8,11 @@ import java.util.Scanner;
  * @author nylecm
  */
 public class TicTacToe {
-    //Game Configuration:
+    // Game Configuration:
     private static final int NUM_OF_PAYERS = 2;
     private static final String[] PLAYER_NAMES = new String[NUM_OF_PAYERS];
 
-    //Messages:
+    // Messages:
     private static final String WELCOME_PROMPT = "Welcome to TicTacToe!\n";
     private static final String CROSS_WORD = "cross";
     private static final String CROSS_SYMBOL = "X";
@@ -45,7 +45,7 @@ public class TicTacToe {
 
         printInstructions();
 
-        //Players name input:
+        // Players name input:
         Scanner in = new Scanner(System.in);
         System.out.print(PLAYER_1_NAME_PROMPT);
         PLAYER_NAMES[0] = in.nextLine();
@@ -97,7 +97,7 @@ public class TicTacToe {
             }
         }
         System.out.println("Player " + grid.getNextPlayer() + " wins.");
-        //game over.
+        // Game Finished.
     }
 
     /**
@@ -110,6 +110,7 @@ public class TicTacToe {
         System.out.println("Use the diagram below to familiarise yourself with " +
                 "the position numbers:\n");
 
+        //Prints game board with position numbers:
         System.out.println("\t1\t|\t2\t|\t3\t");
         System.out.println("  ------|-------|------");
         System.out.println("\t4\t|\t5\t|\t6\t");
