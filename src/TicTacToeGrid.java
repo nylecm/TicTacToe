@@ -11,7 +11,7 @@ public class TicTacToeGrid {
             numberOfRowsAndColumns * numberOfRowsAndColumns;
 
     // Represents a tic-tac-toe grid:
-    private GRID_STATUS[][] grid =
+    private final GRID_STATUS[][] grid =
             new GRID_STATUS[numberOfRowsAndColumns][numberOfRowsAndColumns];
 
     private int nextPlayer = 1;
