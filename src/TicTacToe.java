@@ -1,12 +1,31 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Properties;
 import java.util.Scanner;
 
 /**
  * @author nylecm
  */
 public class TicTacToe {
+    //Game Configuration:
     private static final int NUM_OF_PAYERS = 2;
     private static final String[] PLAYER_NAMES = new String[NUM_OF_PAYERS];
-    private static final String INPUT_PROMPT = "Input position number, or press I for instructions.";
+
+    //Messages:
+    private static final String WELCOME_PROMPT = "Welcome to TicTacToe!\n";
+    private static final String CROSS_WORD = "cross";
+    private static final String CROSS_SYMBOL = "X";
+    private static final String NAUGHT_WORD = "naught";
+    private static final String NAUGHT_SYMBOL = "O";
+    private static final String PLAYER_1_NAME_PROMPT =
+            "Please enter player 1's (" + CROSS_SYMBOL + ") name: ";
+    private static final String PLAYER_2_NAME_PROMPT =
+            "Please enter player 2's (" + NAUGHT_SYMBOL + ") name: ";
+    private static final String INPUT_PROMPT_FIRST_ATTEMPT =
+            "'s go enter position number to place your ";
+    private static final String INSTRUCTIONS_WORD_FIRST_LETTER = "I";
+    private static final String INPUT_PROMPT = "Input position number, or press" +
+            " I for instructions.";
 
 
     public static void main(String[] args) {
@@ -14,15 +33,14 @@ public class TicTacToe {
     }
 
     private static void playTicTacToe() {
-
-        System.out.println("Welcome to TicTacToe!\n");
+        System.out.println(WELCOME_PROMPT);
 
         printInstructions();
 
         Scanner in = new Scanner(System.in);
-        System.out.print("Please enter player 1's (X) name: ");
+        System.out.print(PLAYER_1_NAME_PROMPT);
         PLAYER_NAMES[0] = in.nextLine();
-        System.out.print("Please enter player 2's (O) name: ");
+        System.out.print(PLAYER_2_NAME_PROMPT);
         PLAYER_NAMES[1] = in.nextLine();
 
         TicTacToeGrid grid = new TicTacToeGrid();
@@ -31,11 +49,11 @@ public class TicTacToe {
         //Main gameplay loop:
         while (!isGameFinished) {
             if (grid.getNextPlayer() == 1) {
-                System.out.print(PLAYER_NAMES[0] + "'s go enter position number " +
-                        "to place your cross:");
+                System.out.print(PLAYER_NAMES[0] + INPUT_PROMPT_FIRST_ATTEMPT +
+                        CROSS_WORD + ": ");
             } else {
-                System.out.print(PLAYER_NAMES[1] + "'s go enter position number " +
-                        "to place your nought:");
+                System.out.print(PLAYER_NAMES[1] + INPUT_PROMPT_FIRST_ATTEMPT +
+                        NAUGHT_WORD + ": ");
             }
 
             String playerInput;
@@ -44,7 +62,7 @@ public class TicTacToe {
             while (!isSymbolPlaced) {
                 playerInput = in.nextLine();
 
-                if (playerInput.equals("I")) {
+                if (playerInput.equals(INSTRUCTIONS_WORD_FIRST_LETTER)) {
                     printInstructions();
                     System.out.println(INPUT_PROMPT);
                 } else {
@@ -65,7 +83,6 @@ public class TicTacToe {
                     }
                 }
             }
-
         }
         System.out.println("Player " + grid.getNextPlayer() + " wins.");
         //game over.
