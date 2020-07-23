@@ -66,47 +66,62 @@ public class TicTacToe {
                 System.out.print(PLAYER_NAMES[1] + INPUT_PROMPT_FIRST_ATTEMPT +
                         NAUGHT_WORD + ": ");
             }
-
-            String playerInput;
-
-            boolean isSymbolPlaced = false; // True when the player marks the board.
-
-            // Player input loop:
-            while (!isSymbolPlaced) {
-                playerInput = in.nextLine();
-
-                // Interprets player input:
-                if (playerInput.equals(INSTRUCTIONS_WORD_FIRST_LETTER)) {
-                    printInstructions();
-                    System.out.println(INPUT_PROMPT);
-                } else { // All inputs except above indicate the user wants to mark the grid.
-                    try {
-                        grid.markGrid(Integer.parseInt(playerInput));
-                        // Successfully entered a grid position:
-                        isSymbolPlaced = true;
-                    } catch (NumberFormatException ex) { // Number Parsed Incorrectly.
-                        System.out.println("Please enter an integer or a valid " +
-                                "character such as " + INSTRUCTIONS_WORD_FIRST_LETTER + ".");
-                        System.out.println(INPUT_PROMPT);
-                    } catch (IndexOutOfBoundsException | IllegalArgumentException ex) {
-                        // Either grid position number out-of-range, or position
-                        // already occupied.
-                        System.out.println(ex.getMessage());
-                        System.out.println(INPUT_PROMPT);
-                    }
-
-                    if (isSymbolPlaced && grid.isGameFinished()) {
-                        isGameFinished = true;
-                    } else { // Game continues.
-                        System.out.println(grid.toString());
-                        grid.incrementPlayer();
-                    }
-                }
-            }
+            isGameFinished = playerMoveInput(in, grid);
         }
         //TODO Improve game finished message.
         System.out.println("Player " + grid.getNextPlayer() + " wins.");
         // Game Finished.
+    }
+
+    /**
+     * Takes the input from the player at each turn, it could be the player
+     * asking for instructions by pressing 'I' or it could be the player wanting
+     * to place their mark at a given position.
+     *
+     * @param in   the scanner used to read from console.
+     * @param grid the tic tac toe grid object in use.
+     * @return true if game is finished.
+     */
+    private static boolean playerMoveInput(Scanner in, TicTacToeGrid grid) {
+        // True when the player marks the board.
+        boolean isSymbolPlaced = false;
+        // Must be false as the game is still asking a player to mark the board.
+        boolean isGameFinished = false;
+        String playerInput;
+
+        // Player input loop:
+        while (!isSymbolPlaced) {
+            playerInput = in.nextLine();
+
+            // Interprets player input:
+            if (playerInput.equals(INSTRUCTIONS_WORD_FIRST_LETTER)) {
+                printInstructions();
+                System.out.println(INPUT_PROMPT);
+            } else { // All inputs except above indicate the user wants to mark the grid.
+                try {
+                    grid.markGrid(Integer.parseInt(playerInput));
+                    // Successfully entered a grid position:
+                    isSymbolPlaced = true;
+                } catch (NumberFormatException ex) { // Number Parsed Incorrectly.
+                    System.out.println("Please enter an integer or a valid " +
+                            "character such as " + INSTRUCTIONS_WORD_FIRST_LETTER + ".");
+                    System.out.println(INPUT_PROMPT);
+                } catch (IndexOutOfBoundsException | IllegalArgumentException ex) {
+                    // Either grid position number out-of-range, or position
+                    // already occupied.
+                    System.out.println(ex.getMessage());
+                    System.out.println(INPUT_PROMPT);
+                }
+
+                if (isSymbolPlaced && grid.isGameFinished()) {
+                    isGameFinished = true;
+                } else { // Game continues.
+                    System.out.println(grid.toString());
+                    grid.incrementPlayer();
+                }
+            }
+        }
+        return isGameFinished;
     }
 
     /**
