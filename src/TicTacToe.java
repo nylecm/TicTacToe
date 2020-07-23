@@ -75,6 +75,7 @@ public class TicTacToe {
             while (!isSymbolPlaced) {
                 playerInput = in.nextLine();
 
+
                 if (playerInput.equals(INSTRUCTIONS_WORD_FIRST_LETTER)) {
                     printInstructions();
                     System.out.println(INPUT_PROMPT);
@@ -83,16 +84,19 @@ public class TicTacToe {
                         grid.markGrid(Integer.parseInt(playerInput));
                         isSymbolPlaced = true;
                         System.out.println(grid.toString());
-
-                        if (grid.isGameFinished()) {
-                            isGameFinished = true;
-                        } else {
-                            grid.incrementPlayer();
-                        }
-
-                    } catch (IllegalArgumentException | IndexOutOfBoundsException ex) {
+                    } catch (NumberFormatException ex) {
+                        System.out.println("Please enter an integer or a valid " +
+                                "character such as " + INSTRUCTIONS_WORD_FIRST_LETTER + ".");
+                        System.out.println(INPUT_PROMPT);
+                    } catch (IndexOutOfBoundsException | IllegalArgumentException ex) {
                         System.out.println(ex.getMessage());
                         System.out.println(INPUT_PROMPT);
+                    }
+
+                    if (isSymbolPlaced && grid.isGameFinished()) {
+                        isGameFinished = true;
+                    } else {
+                        grid.incrementPlayer();
                     }
                 }
             }
