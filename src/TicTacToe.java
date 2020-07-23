@@ -68,8 +68,6 @@ public class TicTacToe {
             }
             isGameFinished = playerMoveInput(in, grid);
         }
-        //TODO Improve game finished message.
-        System.out.println("Player " + grid.getNextPlayer() + " wins.");
         // Game Finished.
     }
 
@@ -115,8 +113,10 @@ public class TicTacToe {
 
                 if (isSymbolPlaced && grid.isMaxMovesMade()) {
                     isGameFinished = true;
+                    winMessage(grid);
                 } else if (isSymbolPlaced && grid.isWin()) {
                     isGameFinished = true;
+                    tieMessage();
                 } else { // Game continues.
                     System.out.println(grid.toString());
                     grid.incrementPlayer();
@@ -124,6 +124,14 @@ public class TicTacToe {
             }
         }
         return isGameFinished;
+    }
+
+    private static void winMessage(TicTacToeGrid grid) {
+        System.out.println("Player " + grid.getNextPlayer() + " wins.");
+    }
+
+    private static void tieMessage() {
+        System.out.println("There has been a tie.");
     }
 
     /**
