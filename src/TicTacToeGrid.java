@@ -1,8 +1,16 @@
 /**
+ * The type Tic tac toe grid.
+ *
  * @author nylecm
  */
 public class TicTacToeGrid {
+    /**
+     * The Number of rows and columns.
+     */
     public final int numberOfRowsAndColumns = 3;
+    /**
+     * The Number of grid positions.
+     */
     public final int numberOfGridPositions = numberOfRowsAndColumns *
             numberOfRowsAndColumns;
 
@@ -10,10 +18,20 @@ public class TicTacToeGrid {
     private int nextPlayer = 1;
     private int numberOfMarks = 0;
 
+    /**
+     * Instantiates a new Tic tac toe grid.
+     */
     public TicTacToeGrid() {
         unsetAllPositions();
     }
 
+    /**
+     * Mark grid.
+     *
+     * @param gridPosition the grid position
+     * @throws IndexOutOfBoundsException the index out of bounds exception
+     * @throws IllegalArgumentException  the illegal argument exception
+     */
     public void markGrid(int gridPosition) throws IndexOutOfBoundsException, IllegalArgumentException {
         int row = convertPositionNumberToRowNumber(gridPosition);
         int column = convertPositionNumberToColumnNumber(gridPosition);
@@ -62,10 +80,18 @@ public class TicTacToeGrid {
         return gameBoard[gridRow][gridColumn] == GRID_STATUS.UNCLAIMED;
     }
 
+    /**
+     * Gets next player.
+     *
+     * @return the next player
+     */
     public int getNextPlayer() {
         return nextPlayer;
     }
 
+    /**
+     * Increment player.
+     */
     public void incrementPlayer() {
         if (nextPlayer == 1) {
             nextPlayer++;
@@ -74,7 +100,12 @@ public class TicTacToeGrid {
         }
     }
 
-    //FIXME
+    /**
+     * Is game finished boolean.
+     *
+     * @return the boolean
+     */
+//FIXME
     public boolean isGameFinished() {
         return isWin() || numberOfMarks >= numberOfGridPositions; //TODO add tie condition
     }
@@ -133,6 +164,9 @@ public class TicTacToeGrid {
         return true;
     }
 
+    /**
+     * Unset all positions.
+     */
     public void unsetAllPositions() {
         for (int i = 0; i < numberOfRowsAndColumns; i++) {
             for (int j = 0; j < numberOfRowsAndColumns; j++) {
