@@ -100,13 +100,14 @@ public class TicTacToeGrid {
     }
 
     public boolean isWin() {
-        // True When 3 in a row.
+        // Win when a horizontal row is complete.
         for (GRID_STATUS[] gridRow : grid) {
             if (isEveryMarkInGridLineSame(gridRow)) {
                 return true;
             }
         }
 
+        //Win when a vertical column is complete.
         for (int i = 0; i < numberOfRowsAndColumns; i++) { //For top item in column:
             GRID_STATUS[] gridColumn = new GRID_STATUS[numberOfRowsAndColumns];
             gridColumn[0] = grid[0][i];
@@ -119,7 +120,7 @@ public class TicTacToeGrid {
             }
         }
 
-        //Diagonal win:
+        //Diagonal wins:
         GRID_STATUS[] diagonalLineDown = new GRID_STATUS[3];
         diagonalLineDown[0] = grid[0][0];
         diagonalLineDown[1] = grid[1][1];
