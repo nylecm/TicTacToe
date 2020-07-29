@@ -115,9 +115,11 @@ public class TicTacToe {
                 }
 
                 if (isSymbolPlaced && grid.isWin()) { // Game won:
+                    System.out.println(grid.toString());
                     isGameFinished = true;
                     winMessage(grid);
                 } else if (isSymbolPlaced && grid.isMaxMovesMade()) { // Tie:
+                    System.out.println(grid.toString());
                     isGameFinished = true;
                     tieMessage();
                 } else { // Game Continues:
@@ -135,7 +137,7 @@ public class TicTacToe {
      * @param grid the grid from which the number of the winning player is fetched.
      */
     private static void winMessage(TicTacToeGrid grid) {
-        System.out.println("Player " + grid.getNextPlayer() + " wins.");
+        System.out.println("Player " + grid.getNextPlayer() + " (" + PLAYER_NAMES[grid.getNextPlayer() - 1] + ") wins.");
     }
 
     /**
