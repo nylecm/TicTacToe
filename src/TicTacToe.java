@@ -1,9 +1,12 @@
 import java.util.Scanner;
 
 /**
- * The type Tic tac toe, which handles the gameplay sequence of the game.
+ * <b>File Name: </b> <p>TicTacToe.java</p>
+ * <b>Description: </b>
  * <p>
- * Currently the game supports two human players.
+ * Handles the gameplay sequence of the tic tac toe game. Currently supports
+ * a classic 3x3 grid, with 2 human players.
+ * </p>
  *
  * @author nylecm
  */
