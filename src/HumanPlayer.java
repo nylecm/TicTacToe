@@ -6,9 +6,9 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    public int pickPosition() {
+    public String pickPosition() {
         //A mere human needs to manually input a position number.
         Scanner in = new Scanner(System.in);
-        return in.nextInt();
+        return in.nextLine();
     }
 }

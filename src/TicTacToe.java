@@ -54,20 +54,7 @@ public class TicTacToe {
         while (isGameToRepeat) {
             Scanner in = new Scanner(System.in);
 
-            setUpGame(in);
-
-            // Players name input:
-            String[] playerNames = new String[NUM_OF_PAYERS];
-
-            for (int i = 0; i < NUM_OF_PAYERS; i++) {
-                System.out.print(PLAYER_1_NAME_PROMPT);
-                PLAYERS[i] = new Plain.nextLine();
-
-
-            }
-
-            System.out.print(PLAYER_2_NAME_PROMPT);
-            PLAYER_NAMES[1] = in.nextLine();
+            setUpGame(in); // Player input of game mode, and their name(s).
 
             TicTacToeGrid grid = new TicTacToeGrid();
 
@@ -76,14 +63,18 @@ public class TicTacToe {
 
             // Main gameplay loop, terminates when the game ends:
             while (!isGameFinished) {
+                Player curPlayer;
+
                 if (grid.getNextPlayer() == 1) {
-                    System.out.print(PLAYER_NAMES[0] + INPUT_PROMPT_FIRST_ATTEMPT +
+                    curPlayer = PLAYERS[0];
+                    System.out.print(PLAYERS[0].getName() + INPUT_PROMPT_FIRST_ATTEMPT +
                             CROSS_WORD + ": ");
                 } else {
-                    System.out.print(PLAYER_NAMES[1] + INPUT_PROMPT_FIRST_ATTEMPT +
+                    curPlayer = PLAYERS[1];
+                    System.out.print(PLAYERS[1].getName() + INPUT_PROMPT_FIRST_ATTEMPT +
                             NAUGHT_WORD + ": ");
                 }
-                isGameFinished = playerMoveInput(in, grid);
+                isGameFinished = playerMoveInput(grid, curPlayer);
             }
             // Game Finished.
 
@@ -121,18 +112,21 @@ public class TicTacToe {
 
                 if (gameMode == 1) {
                     //Player name input.
-                    PLAYERS[0] = new HumanPlayer(in.nextLine());
+                    System.out.print(PLAYER_1_NAME_PROMPT);
+                    PLAYERS[0] = new HumanPlayer(in.nextLine()); //FIXME
+                    System.out.print(PLAYER_2_NAME_PROMPT);
                     PLAYERS[1] = new HumanPlayer(in.nextLine());
                     isValidGameModeEntered = true;
                 } else if (gameMode == 2) {
                     //Player name input.
-
+                    System.out.print(PLAYER_1_NAME_PROMPT);
                     PLAYERS[0] = new HumanPlayer(in.nextLine());
                     PLAYERS[1] = new AIPlayer("AI Player 2", AIDifficulty.MEDIUM);
                     isValidGameModeEntered = true;
                 } else if (gameMode == 3) {
                     PLAYERS[0] = new AIPlayer("AI Player 2", AIDifficulty.MEDIUM);
-                    PLAYERS[1] = new HumanPlayer(in.nextLine())
+                    System.out.print(PLAYER_2_NAME_PROMPT);
+                    PLAYERS[1] = new HumanPlayer(in.nextLine());
                     isValidGameModeEntered = true;
                 } else {
                     throw new IllegalArgumentException("Game mode needs to be 1, 2, or 3.");
@@ -152,7 +146,7 @@ public class TicTacToe {
      * @param grid the tic tac toe grid object in use.
      * @return true if game is finished.
      */
-    private static boolean playerMoveInput(Scanner in, TicTacToeGrid grid) {
+    private static boolean playerMoveInput(TicTacToeGrid grid, Player curPlayer) { //TODO oop
         // True when the player marks the board.
         boolean isSymbolPlaced = false;
         // Must be false as the game is still asking a player to mark the board.
@@ -161,7 +155,7 @@ public class TicTacToe {
 
         // Player input loop:
         while (!isSymbolPlaced) {
-            playerInput = in.nextLine();
+            playerInput = curPlayer.pickPosition();
 
             // Interprets player input:
             if (playerInput.equals(INSTRUCTIONS_WORD_FIRST_LETTER)) {
@@ -206,7 +200,7 @@ public class TicTacToe {
      * @param grid the grid from which the number of the winning player is fetched.
      */
     private static void winMessage(TicTacToeGrid grid) {
-        System.out.println("Player " + grid.getNextPlayer() + " (" + PLAYER_NAMES[grid.getNextPlayer() - 1] + ") wins.");
+        System.out.println("Player " + grid.getNextPlayer() + " (" + PLAYERS[grid.getNextPlayer() - 1].getName() + ") wins.");
     }
 
     /**

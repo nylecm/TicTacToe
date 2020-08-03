@@ -9,7 +9,7 @@ public class AIPlayer extends Player {
     }
 
     @Override
-    public int pickPosition() {
-        return -1; //TODO write position picker algorithm.
+    public String pickPosition() {
+        return ((Long) Math.round((Math.random() * 9))).toString(); //TODO write position picker algorithm.
     }
 }

@@ -9,7 +9,7 @@ public abstract class Player {
         this.name = name;
     }
 
-    public abstract int pickPosition();
+    public abstract String pickPosition();
 
     public String getName() {
         return name;
