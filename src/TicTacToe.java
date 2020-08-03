@@ -63,7 +63,7 @@ public class TicTacToe {
             // True when it's determined that the game should end.
             boolean isGameFinished = false;
 
-            // Main gameplay loop:
+            // Main gameplay loop, terminates when the game ends:
             while (!isGameFinished) {
                 if (grid.getNextPlayer() == 1) {
                     System.out.print(PLAYER_NAMES[0] + INPUT_PROMPT_FIRST_ATTEMPT +
@@ -79,6 +79,8 @@ public class TicTacToe {
             boolean isValidInput = false;
             System.out.println("Do you want to play again (Type Y/n)?");
 
+            // Allows user to input whether they want to play again.
+            // Terminates when the user enters y/n.
             while (!isValidInput) {
                 String continueYesNo = in.nextLine();
                 if (continueYesNo.equalsIgnoreCase("n")) {
