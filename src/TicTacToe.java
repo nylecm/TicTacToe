@@ -48,30 +48,50 @@ public class TicTacToe {
 
         printInstructions();
 
-        // Players name input:
-        Scanner in = new Scanner(System.in);
-        System.out.print(PLAYER_1_NAME_PROMPT);
-        PLAYER_NAMES[0] = in.nextLine();
-        System.out.print(PLAYER_2_NAME_PROMPT);
-        PLAYER_NAMES[1] = in.nextLine();
+        boolean isGameToRepeat = true;
 
-        TicTacToeGrid grid = new TicTacToeGrid();
+        while (isGameToRepeat) {
+            // Players name input:
+            Scanner in = new Scanner(System.in);
+            System.out.print(PLAYER_1_NAME_PROMPT);
+            PLAYER_NAMES[0] = in.nextLine();
+            System.out.print(PLAYER_2_NAME_PROMPT);
+            PLAYER_NAMES[1] = in.nextLine();
 
-        // True when it's determined that the game should end.
-        boolean isGameFinished = false;
+            TicTacToeGrid grid = new TicTacToeGrid();
 
-        // Main gameplay loop:
-        while (!isGameFinished) {
-            if (grid.getNextPlayer() == 1) {
-                System.out.print(PLAYER_NAMES[0] + INPUT_PROMPT_FIRST_ATTEMPT +
-                        CROSS_WORD + ": ");
-            } else {
-                System.out.print(PLAYER_NAMES[1] + INPUT_PROMPT_FIRST_ATTEMPT +
-                        NAUGHT_WORD + ": ");
+            // True when it's determined that the game should end.
+            boolean isGameFinished = false;
+
+            // Main gameplay loop:
+            while (!isGameFinished) {
+                if (grid.getNextPlayer() == 1) {
+                    System.out.print(PLAYER_NAMES[0] + INPUT_PROMPT_FIRST_ATTEMPT +
+                            CROSS_WORD + ": ");
+                } else {
+                    System.out.print(PLAYER_NAMES[1] + INPUT_PROMPT_FIRST_ATTEMPT +
+                            NAUGHT_WORD + ": ");
+                }
+                isGameFinished = playerMoveInput(in, grid);
             }
-            isGameFinished = playerMoveInput(in, grid);
+            // Game Finished.
+
+            boolean isValidInput = false;
+            System.out.println("Do you want to play again (Type Y/n)?");
+
+            while (!isValidInput) {
+                String continueYesNo = in.nextLine();
+                if (continueYesNo.equalsIgnoreCase("n")) {
+                    isGameToRepeat = false;
+                    isValidInput = true;
+                } else if (continueYesNo.equalsIgnoreCase("Y")) {
+                    isValidInput = true;
+                } else {
+                    System.out.println("Please enter Y or n, to either " +
+                            "continue or stop playing.");
+                }
+            }
         }
-        // Game Finished.
     }
 
     /**
