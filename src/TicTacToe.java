@@ -67,37 +67,33 @@ public class TicTacToe {
 
                 if (grid.getNextPlayer() == 1) {
                     curPlayer = PLAYERS[0];
-                    System.out.print(PLAYERS[0].getName() + INPUT_PROMPT_FIRST_ATTEMPT +
-                            CROSS_WORD + ": ");
+                    if (curPlayer.getClass() == HumanPlayer.class) {
+                        System.out.println(PLAYERS[0].getName() + INPUT_PROMPT_FIRST_ATTEMPT +
+                                CROSS_WORD + ": ");
+                    } else {
+                        System.out.println("Player: " + curPlayer.getName() + " has made their move.");
+                    }
                 } else {
                     curPlayer = PLAYERS[1];
-                    System.out.print(PLAYERS[1].getName() + INPUT_PROMPT_FIRST_ATTEMPT +
-                            NAUGHT_WORD + ": ");
+                    if (curPlayer.getClass() == HumanPlayer.class) {
+                        System.out.println(PLAYERS[1].getName() + INPUT_PROMPT_FIRST_ATTEMPT +
+                                NAUGHT_WORD + ": ");
+                    } else {
+                        System.out.println("Player: " + curPlayer.getName() + " has made their move.");
+                    }
                 }
                 isGameFinished = playerMoveInput(grid, curPlayer);
             }
             // Game Finished.
 
-            boolean isValidInput = false;
-            System.out.println("Do you want to play again (Type Y/n)?");
-
-            // Allows user to input whether they want to play again.
-            // Terminates when the user enters y/n.
-            while (!isValidInput) {
-                String continueYesNo = in.nextLine();
-                if (continueYesNo.equalsIgnoreCase("n")) {
-                    isGameToRepeat = false;
-                    isValidInput = true;
-                } else if (continueYesNo.equalsIgnoreCase("Y")) {
-                    isValidInput = true;
-                } else {
-                    System.out.println("Please enter Y or n, to either " +
-                            "continue or stop playing.");
-                }
-            }
+            isGameToRepeat = isGameToRepeat(in); // Checks if user wants to play again.
         }
     }
 
+    /**
+     * @param in
+     * @throws IllegalArgumentException
+     */
     private static void setUpGame(Scanner in) throws IllegalArgumentException {
         System.out.println("Select game mode: \n");
         System.out.println("Enter 1 for two-player.");
@@ -109,30 +105,41 @@ public class TicTacToe {
         while (!isValidGameModeEntered) {
             try {
                 int gameMode = in.nextInt();
+                in.nextLine();
 
+                // Creates players based on the game mode selected:
                 if (gameMode == 1) {
-                    //Player name input.
-                    System.out.print(PLAYER_1_NAME_PROMPT);
-                    PLAYERS[0] = new HumanPlayer(in.nextLine()); //FIXME
-                    System.out.print(PLAYER_2_NAME_PROMPT);
-                    PLAYERS[1] = new HumanPlayer(in.nextLine());
+                    System.out.println(PLAYER_1_NAME_PROMPT);
+                    String player1Name = in.nextLine();
+                    PLAYERS[0] = new HumanPlayer(player1Name);
+
+                    System.out.println(PLAYER_2_NAME_PROMPT);
+                    String player2Name = in.nextLine();
+                    PLAYERS[1] = new HumanPlayer(player2Name);
+
                     isValidGameModeEntered = true;
                 } else if (gameMode == 2) {
-                    //Player name input.
-                    System.out.print(PLAYER_1_NAME_PROMPT);
-                    PLAYERS[0] = new HumanPlayer(in.nextLine());
+                    System.out.println(PLAYER_1_NAME_PROMPT);
+                    String player1Name = in.nextLine();
+                    PLAYERS[0] = new HumanPlayer(player1Name);
+
                     PLAYERS[1] = new AIPlayer("AI Player 2", AIDifficulty.MEDIUM);
+
                     isValidGameModeEntered = true;
                 } else if (gameMode == 3) {
-                    PLAYERS[0] = new AIPlayer("AI Player 2", AIDifficulty.MEDIUM);
-                    System.out.print(PLAYER_2_NAME_PROMPT);
-                    PLAYERS[1] = new HumanPlayer(in.nextLine());
+                    PLAYERS[0] = new AIPlayer("AI Player 1", AIDifficulty.MEDIUM);
+
+                    System.out.println(PLAYER_2_NAME_PROMPT);
+                    String player2Name = in.nextLine();
+                    PLAYERS[1] = new HumanPlayer(player2Name);
+
                     isValidGameModeEntered = true;
                 } else {
-                    throw new IllegalArgumentException("Game mode needs to be 1, 2, or 3.");
+                    System.out.println("Game mode needs to be 1, 2, or 3.");
                 }
             } catch (InputMismatchException ex) {
-                System.out.println("Numeric input required. Please enter either 1, 2, or 3.");
+                System.out.println("Numeric input required. Please enter either " +
+                        "1, 2, or 3.");
             }
         }
     }
@@ -142,23 +149,25 @@ public class TicTacToe {
      * asking for instructions by pressing 'I' or it could be the player wanting
      * to place their mark at a given position.
      *
-     * @param in   the scanner used to read from console.
-     * @param grid the tic tac toe grid object in use.
+     * @param grid      the tic tac toe grid object in use.
+     * @param curPlayer the current player making a move.
      * @return true if game is finished.
      */
-    private static boolean playerMoveInput(TicTacToeGrid grid, Player curPlayer) { //TODO oop
+    private static boolean playerMoveInput(TicTacToeGrid grid, Player curPlayer) {
         // True when the player marks the board.
         boolean isSymbolPlaced = false;
         // Must be false as the game is still asking a player to mark the board.
         boolean isGameFinished = false;
         String playerInput;
 
+        //TODO logic to handle outputs when AI player is having their turn. eg remove prompt.
+
         // Player input loop:
         while (!isSymbolPlaced) {
             playerInput = curPlayer.pickPosition();
 
             // Interprets player input:
-            if (playerInput.equals(INSTRUCTIONS_WORD_FIRST_LETTER)) {
+            if (playerInput.equals(INSTRUCTIONS_WORD_FIRST_LETTER)) { // Special input(s):
                 printInstructions();
                 System.out.println(INPUT_PROMPT);
             } else { // All inputs except above indicate the user wants to mark the grid.
@@ -178,15 +187,15 @@ public class TicTacToe {
                 }
 
                 if (isSymbolPlaced && grid.isWin()) { // Game won:
-                    System.out.println(grid.toString());
                     isGameFinished = true;
                     winMessage(grid);
                 } else if (isSymbolPlaced && grid.isMaxMovesMade()) { // Tie:
-                    System.out.println(grid.toString());
                     isGameFinished = true;
-                    tieMessage();
-                } else { // Game Continues:
+                    tieMessage(grid);
+                } else if (isSymbolPlaced) { // Game Continues:
                     System.out.println(grid.toString());
+                    grid.incrementPlayer();
+                } else {
                     grid.incrementPlayer();
                 }
             }
@@ -200,14 +209,44 @@ public class TicTacToe {
      * @param grid the grid from which the number of the winning player is fetched.
      */
     private static void winMessage(TicTacToeGrid grid) {
-        System.out.println("Player " + grid.getNextPlayer() + " (" + PLAYERS[grid.getNextPlayer() - 1].getName() + ") wins.");
+        System.out.println(grid.toString());
+        System.out.println("\nPlayer " + grid.getNextPlayer() + " (" + PLAYERS[grid.getNextPlayer() - 1].getName() + ") wins.");
     }
 
     /**
      * Notifies the user that the game has been tied.
      */
-    private static void tieMessage() {
-        System.out.println("There has been a tie.");
+    private static void tieMessage(TicTacToeGrid grid) {
+        System.out.println(grid.toString());
+        System.out.println("\nThere has been a tie.");
+    }
+
+    /**
+     * todo
+     *
+     * @param in
+     * @return
+     */
+    private static boolean isGameToRepeat(Scanner in) {
+        boolean isGameToRepeat = false;
+        boolean isValidInput = false;
+        System.out.println("Do you want to play again (Type Y/n)?");
+
+        // Allows user to input whether they want to play again.
+        // Terminates when the user enters y/n.
+        while (!isValidInput) {
+            String continueYesNo = in.nextLine();
+            if (continueYesNo.equalsIgnoreCase("n")) {
+                isValidInput = true;
+            } else if (continueYesNo.equalsIgnoreCase("Y")) {
+                isGameToRepeat = true;
+                isValidInput = true;
+            } else {
+                System.out.println("Please enter Y or n, to either " +
+                        "continue or stop playing.");
+            }
+        }
+        return isGameToRepeat;
     }
 
     /**
