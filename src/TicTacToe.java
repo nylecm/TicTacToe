@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Scanner;
 public class TicTacToe {
     // Game Configuration:
     private static final int NUM_OF_PAYERS = 2;
-    private static final String[] PLAYER_NAMES = new String[NUM_OF_PAYERS];
+    private static final Player[] PLAYERS = new Player[NUM_OF_PAYERS];
 
     // Messages:
     private static final String WELCOME_PROMPT = "Welcome to TicTacToe!\n";
@@ -51,10 +52,20 @@ public class TicTacToe {
         boolean isGameToRepeat = true;
 
         while (isGameToRepeat) {
-            // Players name input:
             Scanner in = new Scanner(System.in);
-            System.out.print(PLAYER_1_NAME_PROMPT);
-            PLAYER_NAMES[0] = in.nextLine();
+
+            setUpGame(in);
+
+            // Players name input:
+            String[] playerNames = new String[NUM_OF_PAYERS];
+
+            for (int i = 0; i < NUM_OF_PAYERS; i++) {
+                System.out.print(PLAYER_1_NAME_PROMPT);
+                PLAYERS[i] = new Plain.nextLine();
+
+
+            }
+
             System.out.print(PLAYER_2_NAME_PROMPT);
             PLAYER_NAMES[1] = in.nextLine();
 
@@ -92,6 +103,42 @@ public class TicTacToe {
                     System.out.println("Please enter Y or n, to either " +
                             "continue or stop playing.");
                 }
+            }
+        }
+    }
+
+    private static void setUpGame(Scanner in) throws IllegalArgumentException {
+        System.out.println("Select game mode: \n");
+        System.out.println("Enter 1 for two-player.");
+        System.out.println("Enter 2 to play as first player(X) against AI.");
+        System.out.println("Enter 3 to play as second player(O) against AI.");
+
+        boolean isValidGameModeEntered = false;
+
+        while (!isValidGameModeEntered) {
+            try {
+                int gameMode = in.nextInt();
+
+                if (gameMode == 1) {
+                    //Player name input.
+                    PLAYERS[0] = new HumanPlayer(in.nextLine());
+                    PLAYERS[1] = new HumanPlayer(in.nextLine());
+                    isValidGameModeEntered = true;
+                } else if (gameMode == 2) {
+                    //Player name input.
+
+                    PLAYERS[0] = new HumanPlayer(in.nextLine());
+                    PLAYERS[1] = new AIPlayer("AI Player 2", AIDifficulty.MEDIUM);
+                    isValidGameModeEntered = true;
+                } else if (gameMode == 3) {
+                    PLAYERS[0] = new AIPlayer("AI Player 2", AIDifficulty.MEDIUM);
+                    PLAYERS[1] = new HumanPlayer(in.nextLine())
+                    isValidGameModeEntered = true;
+                } else {
+                    throw new IllegalArgumentException("Game mode needs to be 1, 2, or 3.");
+                }
+            } catch (InputMismatchException ex) {
+                System.out.println("Numeric input required. Please enter either 1, 2, or 3.");
             }
         }
     }
