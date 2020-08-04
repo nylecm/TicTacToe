@@ -91,10 +91,12 @@ public class TicTacToe {
     }
 
     /**
-     * @param in
-     * @throws IllegalArgumentException
+     * Takes input from the player before the game is started; allowing them
+     * to select game mode (two player or AI mode), as well as enter their name(s).
+     *
+     * @param in the scanner being used to take user input.
      */
-    private static void setUpGame(Scanner in) throws IllegalArgumentException {
+    private static void setUpGame(Scanner in) {
         System.out.println("Select game mode: \n");
         System.out.println("Enter 1 for two-player.");
         System.out.println("Enter 2 to play as first player(X) against AI.");
@@ -110,17 +112,17 @@ public class TicTacToe {
                 // Creates players based on the game mode selected:
                 if (gameMode == 1) {
                     System.out.println(PLAYER_1_NAME_PROMPT);
-                    String player1Name = in.nextLine();
+                    String player1Name = nameInput(in);
                     PLAYERS[0] = new HumanPlayer(player1Name);
 
                     System.out.println(PLAYER_2_NAME_PROMPT);
-                    String player2Name = in.nextLine();
+                    String player2Name = nameInput(in);
                     PLAYERS[1] = new HumanPlayer(player2Name);
 
                     isValidGameModeEntered = true;
                 } else if (gameMode == 2) {
                     System.out.println(PLAYER_1_NAME_PROMPT);
-                    String player1Name = in.nextLine();
+                    String player1Name = nameInput(in);
                     PLAYERS[0] = new HumanPlayer(player1Name);
 
                     PLAYERS[1] = new AIPlayer("AI Player 2", AIDifficulty.MEDIUM);
@@ -130,7 +132,7 @@ public class TicTacToe {
                     PLAYERS[0] = new AIPlayer("AI Player 1", AIDifficulty.MEDIUM);
 
                     System.out.println(PLAYER_2_NAME_PROMPT);
-                    String player2Name = in.nextLine();
+                    String player2Name = nameInput(in);
                     PLAYERS[1] = new HumanPlayer(player2Name);
 
                     isValidGameModeEntered = true;
@@ -142,6 +144,24 @@ public class TicTacToe {
                         "1, 2, or 3.");
             }
         }
+    }
+
+    /**
+     * Handles the input of a name, a name is entered.
+     *
+     * @param in the scanner being used to take user input.
+     * @return the name the user entered.
+     */
+    private static String nameInput(Scanner in) {
+        boolean isNameEntered = false;
+        String name = "";
+
+        while (!isNameEntered) {
+            name = in.nextLine();
+            isNameEntered = !name.isEmpty();
+        }
+
+        return name;
     }
 
     /**
@@ -159,8 +179,6 @@ public class TicTacToe {
         // Must be false as the game is still asking a player to mark the board.
         boolean isGameFinished = false;
         String playerInput;
-
-        //TODO logic to handle outputs when AI player is having their turn. eg remove prompt.
 
         // Player input loop:
         while (!isSymbolPlaced) {
@@ -215,6 +233,8 @@ public class TicTacToe {
 
     /**
      * Notifies the user that the game has been tied.
+     *
+     * @param grid the grid from which the number of the winning player is fetched.
      */
     private static void tieMessage(TicTacToeGrid grid) {
         System.out.println(grid.toString());
@@ -222,10 +242,11 @@ public class TicTacToe {
     }
 
     /**
-     * todo
+     * Takes input from the user to determine whether they want to play the game
+     * again.
      *
-     * @param in
-     * @return
+     * @param in the scanner being used to take user input.
+     * @return true if the user wants to play again.
      */
     private static boolean isGameToRepeat(Scanner in) {
         boolean isGameToRepeat = false;

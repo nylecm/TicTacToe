@@ -1,6 +1,6 @@
 public class AIPlayer extends Player {
 
-    private AIDifficulty difficulty;
+    private final AIDifficulty difficulty;
 
 
     public AIPlayer(String name, AIDifficulty difficulty) {
@@ -10,6 +10,17 @@ public class AIPlayer extends Player {
 
     @Override
     public String pickPosition() {
+        switch (difficulty) {
+            case EASY:
+                // Random 80% of the time
+                break;
+            case MEDIUM:
+                break; // " 60 "
+            case HARD:
+                break; // " 40 "
+        }
+
+
         return ((Long) Math.round((Math.random() * 9))).toString(); //TODO write position picker algorithm.
     }
 }
