@@ -111,18 +111,15 @@ public class TicTacToe {
 
                 // Creates players based on the game mode selected:
                 if (gameMode == 1) {
-                    System.out.println(PLAYER_1_NAME_PROMPT);
-                    String player1Name = nameInput(in);
+                    String player1Name = nameInput(in, PLAYER_1_NAME_PROMPT);
                     PLAYERS[0] = new HumanPlayer(player1Name);
 
-                    System.out.println(PLAYER_2_NAME_PROMPT);
-                    String player2Name = nameInput(in);
+                    String player2Name = nameInput(in, PLAYER_2_NAME_PROMPT);
                     PLAYERS[1] = new HumanPlayer(player2Name);
 
                     isValidGameModeEntered = true;
                 } else if (gameMode == 2) {
-                    System.out.println(PLAYER_1_NAME_PROMPT);
-                    String player1Name = nameInput(in);
+                    String player1Name = nameInput(in, PLAYER_1_NAME_PROMPT);
                     PLAYERS[0] = new HumanPlayer(player1Name);
 
                     PLAYERS[1] = new AIPlayer("AI Player 2", AIDifficulty.MEDIUM);
@@ -131,8 +128,7 @@ public class TicTacToe {
                 } else if (gameMode == 3) {
                     PLAYERS[0] = new AIPlayer("AI Player 1", AIDifficulty.MEDIUM);
 
-                    System.out.println(PLAYER_2_NAME_PROMPT);
-                    String player2Name = nameInput(in);
+                    String player2Name = nameInput(in, PLAYER_2_NAME_PROMPT);
                     PLAYERS[1] = new HumanPlayer(player2Name);
 
                     isValidGameModeEntered = true;
@@ -152,11 +148,12 @@ public class TicTacToe {
      * @param in the scanner being used to take user input.
      * @return the name the user entered.
      */
-    private static String nameInput(Scanner in) {
+    private static String nameInput(Scanner in, String prompt) {
         boolean isNameEntered = false;
         String name = "";
 
         while (!isNameEntered) {
+            System.out.println(prompt);
             name = in.nextLine();
             isNameEntered = !name.isEmpty();
         }
