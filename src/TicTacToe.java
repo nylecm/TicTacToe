@@ -54,9 +54,8 @@ public class TicTacToe {
         while (isGameToRepeat) {
             Scanner in = new Scanner(System.in);
 
-            setUpGame(in); // Player input of game mode, and their name(s).
-
             TicTacToeGrid grid = new TicTacToeGrid();
+            setUpGame(in, grid); // Player input of game mode, and their name(s).
 
             // True when it's determined that the game should end.
             boolean isGameFinished = false;
@@ -94,9 +93,10 @@ public class TicTacToe {
      * Takes input from the player before the game is started; allowing them
      * to select game mode (two player or AI mode), as well as enter their name(s).
      *
-     * @param in the scanner being used to take user input.
+     * @param in   the scanner being used to take user input.
+     * @param grid the tic tac toe grid object in use.
      */
-    private static void setUpGame(Scanner in) {
+    private static void setUpGame(Scanner in, TicTacToeGrid grid) {
         System.out.println("Select game mode: \n");
         System.out.println("Enter 1 for two-player.");
         System.out.println("Enter 2 to play as first player(X) against AI.");
@@ -122,11 +122,13 @@ public class TicTacToe {
                     String player1Name = nameInput(in, PLAYER_1_NAME_PROMPT);
                     PLAYERS[0] = new HumanPlayer(player1Name);
 
-                    PLAYERS[1] = new AIPlayer("AI Player 2", AIDifficulty.MEDIUM);
+                    PLAYERS[1] = new AITicTacToePlayer("AI Player 2",
+                            AIDifficulty.MEDIUM, grid);
 
                     isValidGameModeEntered = true;
                 } else if (gameMode == 3) {
-                    PLAYERS[0] = new AIPlayer("AI Player 1", AIDifficulty.MEDIUM);
+                    PLAYERS[0] = new AITicTacToePlayer("AI Player 1",
+                            AIDifficulty.MEDIUM, grid);
 
                     String player2Name = nameInput(in, PLAYER_2_NAME_PROMPT);
                     PLAYERS[1] = new HumanPlayer(player2Name);

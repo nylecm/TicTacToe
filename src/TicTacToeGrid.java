@@ -10,8 +10,8 @@
 public class TicTacToeGrid {
 
     // Configures size of a grid:
-    private final static int NUMBER_OF_ROWS_AND_COLUMNS = 3;
-    private final static int NUMBER_OF_GRID_POSITIONS =
+    public final static int NUMBER_OF_ROWS_AND_COLUMNS = 3;
+    public final static int NUMBER_OF_GRID_POSITIONS =
             NUMBER_OF_ROWS_AND_COLUMNS * NUMBER_OF_ROWS_AND_COLUMNS;
 
     // Represents a tic-tac-toe grid:
@@ -20,6 +20,20 @@ public class TicTacToeGrid {
 
     private int nextPlayer = 1;
     private int numberOfMarks = 0;
+
+    /**
+     * Gets a 2d array with represents the status of the grid.
+     *
+     * @return the grid status [ ] [ ]
+     */
+    public GridStatus[][] getGrid() {
+        return grid;
+    }
+
+
+    public int getNumberOfMarks() {
+        return numberOfMarks;
+    }
 
     /**
      * Instantiates a new Tic tac toe grid.
@@ -201,8 +215,7 @@ public class TicTacToeGrid {
     /**
      * Checks if the board is fully filled up with marks.
      *
-     * @return true if the number of marks made is greater than the number of
-     * grid positions.
+     * @return true if the number of marks made is greater than the number of grid positions.
      */
     public boolean isMaxMovesMade() {
         return numberOfMarks >= NUMBER_OF_GRID_POSITIONS;
