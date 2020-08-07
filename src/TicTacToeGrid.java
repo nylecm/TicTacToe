@@ -1,3 +1,5 @@
+import java.lang.reflect.Array;
+
 /**
  * <b>File Name: </b> <p>TicTacToeGrid.java</p>
  * <b>Description: </b>
@@ -22,15 +24,8 @@ public class TicTacToeGrid {
     private int numberOfMarks = 0;
 
     /**
-     * Gets a 2d array with represents the status of the grid.
-     *
-     * @return the grid status [ ] [ ]
+     * @return
      */
-    public GridStatus[][] getGrid() {
-        return grid;
-    }
-
-
     public int getNumberOfMarks() {
         return numberOfMarks;
     }
@@ -119,8 +114,14 @@ public class TicTacToeGrid {
      * @param gridColumn the index of the column of the given position.
      * @return true if grid position is unclaimed.
      */
-    private boolean isGridPositionFree(int gridRow, int gridColumn) {
+    public boolean isGridPositionFree(int gridRow, int gridColumn)
+            throws IndexOutOfBoundsException {
         return grid[gridRow][gridColumn] == GridStatus.UNCLAIMED;
+    }
+
+    public GridStatus getMarkAt(int gridPosition) {
+        return grid[convertPositionNumberToRowNumber(gridPosition)]
+                [convertPositionNumberToColumnNumber(gridPosition)];
     }
 
     /**
@@ -160,12 +161,7 @@ public class TicTacToeGrid {
 
         //Win when a vertical column is complete.
         for (int i = 0; i < NUMBER_OF_ROWS_AND_COLUMNS; i++) { //For top item in column:
-            GridStatus[] gridColumn = new GridStatus[NUMBER_OF_ROWS_AND_COLUMNS];
-            gridColumn[0] = grid[0][i];
-            //loop down 2 more times and add to array.
-            for (int j = 1; j < NUMBER_OF_ROWS_AND_COLUMNS; j++) {
-                gridColumn[j] = grid[j][i];
-            }
+            GridStatus[] gridColumn = getColumn(i);
             if (isEveryMarkInGridLineSame(gridColumn)) {
                 return true;
             }
@@ -210,6 +206,19 @@ public class TicTacToeGrid {
             }
         }
         return true;
+    }
+
+    public GridStatus[] getRow(int rowNumber) {
+        return grid[rowNumber];
+    }
+
+    public GridStatus[] getColumn(int columnNumber) {
+        GridStatus[] gridColumn = new GridStatus[NUMBER_OF_ROWS_AND_COLUMNS];
+        //loop down 2 more times and add to array.
+        for (int j = 0; j < NUMBER_OF_ROWS_AND_COLUMNS; j++) {
+            gridColumn[j] = grid[j][columnNumber];
+        }
+        return gridColumn;
     }
 
     /**
