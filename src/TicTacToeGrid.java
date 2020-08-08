@@ -25,14 +25,14 @@ public class TicTacToeGrid {
     private int numberOfMarks = 0;
 
     /**
-     * @return
+     * @return the number of marks made on the board.
      */
     public int getNumberOfMarks() {
         return numberOfMarks;
     }
 
     /**
-     * Instantiates a new Tic tac toe grid.
+     * Instantiates a new empty tic tac toe grid.
      */
     public TicTacToeGrid() {
         unclaimAllPositions();
@@ -207,10 +207,22 @@ public class TicTacToeGrid {
         return true;
     }
 
+    /**
+     * Gets a row from the tic tac toe grid.
+     *
+     * @param rowNumber the number of the row where 0 is the first row.
+     * @return the row as a GridStatus[].
+     */
     public GridStatus[] getRow(int rowNumber) {
         return grid[rowNumber];
     }
 
+    /**
+     * Gets a column from the tic tac toe grid.
+     *
+     * @param columnNumber the number of the column where 0 is the first column.
+     * @return the column as a GridStatus[].
+     */
     public GridStatus[] getColumn(int columnNumber) {
         GridStatus[] gridColumn = new GridStatus[NUMBER_OF_ROWS_AND_COLUMNS];
         //loop down 2 more times and add to array.

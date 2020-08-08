@@ -106,8 +106,8 @@ public class TicTacToe {
 
         while (!isValidGameModeEntered) {
             try {
-                int gameMode = in.nextInt();
-                in.nextLine();
+                String gameModeString = in.nextLine();
+                int gameMode = Integer.parseInt(gameModeString);
 
                 // Creates players based on the game mode selected:
                 if (gameMode == 1) {
@@ -123,12 +123,12 @@ public class TicTacToe {
                     PLAYERS[0] = new HumanPlayer(player1Name);
 
                     PLAYERS[1] = new AITicTacToePlayer("AI Player 2",
-                            AIDifficulty.MEDIUM, grid);
+                            aiDifficultyInput(in), grid);
 
                     isValidGameModeEntered = true;
                 } else if (gameMode == 3) {
                     PLAYERS[0] = new AITicTacToePlayer("AI Player 1",
-                            AIDifficulty.MEDIUM, grid);
+                            aiDifficultyInput(in), grid);
 
                     String player2Name = nameInput(in, PLAYER_2_NAME_PROMPT);
                     PLAYERS[1] = new HumanPlayer(player2Name);
@@ -137,7 +137,7 @@ public class TicTacToe {
                 } else {
                     System.out.println("Game mode needs to be 1, 2, or 3.");
                 }
-            } catch (InputMismatchException ex) {
+            } catch (NumberFormatException ex) {
                 System.out.println("Numeric input required. Please enter either " +
                         "1, 2, or 3.");
             }
@@ -161,6 +161,31 @@ public class TicTacToe {
         }
 
         return name;
+    }
+
+    /**
+     * Handles the input of AI difficulty.
+     *
+     * @param in in the scanner being used to take user input.
+     * @return the AI difficulty selected by the user,
+     */
+    private static AIDifficulty aiDifficultyInput(Scanner in) {
+        while (true) {
+            System.out.println("\nSelect AI difficulty: \n");
+            System.out.println("Enter e for an easy AI.");
+            System.out.println("Enter m for a medium AI.");
+            System.out.println("Enter h for an impossible AI.");
+
+            String difficultyInput = in.nextLine();
+
+            if (difficultyInput.equalsIgnoreCase("e")) {
+                return AIDifficulty.EASY;
+            } else if (difficultyInput.equalsIgnoreCase("m")) {
+                return AIDifficulty.MEDIUM;
+            } else if (difficultyInput.equalsIgnoreCase("h")) {
+                return AIDifficulty.HARD;
+            }
+        }
     }
 
     /**
