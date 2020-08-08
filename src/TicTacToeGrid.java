@@ -1,4 +1,5 @@
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 /**
  * <b>File Name: </b> <p>TicTacToeGrid.java</p>
@@ -17,7 +18,7 @@ public class TicTacToeGrid {
             NUMBER_OF_ROWS_AND_COLUMNS * NUMBER_OF_ROWS_AND_COLUMNS;
 
     // Represents a tic-tac-toe grid:
-    private final GridStatus[][] grid =
+    private GridStatus[][] grid =
             new GridStatus[NUMBER_OF_ROWS_AND_COLUMNS][NUMBER_OF_ROWS_AND_COLUMNS];
 
     private int nextPlayer = 1;
@@ -173,16 +174,14 @@ public class TicTacToeGrid {
         diagonalLineDown[1] = grid[1][1];
         diagonalLineDown[2] = grid[2][2];
 
-
         if (isEveryMarkInGridLineSame(diagonalLineDown)) {
             return true;
         }
 
         GridStatus[] diagonalLineUp = new GridStatus[3];
-        diagonalLineUp[0] = grid[2][2];
+        diagonalLineUp[0] = grid[0][2];
         diagonalLineUp[1] = grid[1][1];
-        diagonalLineUp[2] = grid[0][0];
-
+        diagonalLineUp[2] = grid[2][0];
 
         if (isEveryMarkInGridLineSame(diagonalLineUp)) {
             return true;

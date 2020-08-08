@@ -102,6 +102,9 @@ public class AITicTacToePlayer extends Player {
             int forkMoveFoundAt = 0;
             int oppositeCornerMoveAt = 0;
 
+
+            //todo improve forking so it intelligently picks the square to fork
+
             // For every row:
             for (int i = 0; i < TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS; i++) {
                 //Counts the number of cells in a row with a certain status:
@@ -132,9 +135,9 @@ public class AITicTacToePlayer extends Player {
                         }
                     }
                 } else if (i == 0 || i == TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS - 1 && (blockMoveFoundAt < 1 || forkMoveFoundAt < 1) && (_Count > 0)) {
-                    if ((row[0] == (GridStatus.X_CLAIMED)) && (row[TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS - 1] == GridStatus.UNCLAIMED)) {
+                    if ((row[0] == (GridStatus.X_CLAIMED)) && (row[1] == GridStatus.UNCLAIMED) && (row[2] == GridStatus.UNCLAIMED)) {
                         forkMoveFoundAt = (i * 3) + 3; //End of the row.
-                    } else if ((row[0] == (GridStatus.UNCLAIMED) && row[TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS - 1] == GridStatus.X_CLAIMED)) {
+                    } else if ((row[0] == (GridStatus.UNCLAIMED) && (row[1] == GridStatus.UNCLAIMED) && (row[2] == GridStatus.X_CLAIMED))) {
                         forkMoveFoundAt = (i * 3) + 1; //Beginning of the row.
                     } else if ((row[0] == GridStatus.UNCLAIMED) && oppositeCornerMoveAt < 1) {
                         if (i == 0 && grid.getMarkAt(9) == GridStatus.UNCLAIMED) {
@@ -182,32 +185,100 @@ public class AITicTacToePlayer extends Player {
                             // Tracks blocking move.
                         }
                     }
-                } else if ((column[0] == GridStatus.UNCLAIMED) && oppositeCornerMoveAt < 1) {
-                    if (i == 0 && grid.getMarkAt(9) == GridStatus.UNCLAIMED) {
-                        oppositeCornerMoveAt = 9;
-                    } else if (grid.getMarkAt(3) == GridStatus.UNCLAIMED) {
-                        oppositeCornerMoveAt = 3;
-                    }
-                } else if ((column[TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS - 1] == GridStatus.UNCLAIMED) && oppositeCornerMoveAt < 1) {
-                    if (i == 0 && grid.getMarkAt(7) == GridStatus.UNCLAIMED) {
-                        oppositeCornerMoveAt = 7;
-                    } else if (grid.getMarkAt(1) == GridStatus.UNCLAIMED) {
-                        oppositeCornerMoveAt = 1;
+                } else if (i == 0 || i == TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS - 1 && (blockMoveFoundAt < 1 || forkMoveFoundAt < 1) && (_Count > 0)) {
+                    if ((column[0] == (GridStatus.X_CLAIMED)) && (column[1] == GridStatus.UNCLAIMED) && (column[TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS - 1] == GridStatus.UNCLAIMED)) {
+                        forkMoveFoundAt = i + 7; // End of the column.
+                    } else if ((column[0] == (GridStatus.UNCLAIMED) && (column[1] == GridStatus.UNCLAIMED) && column[TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS - 1] == GridStatus.X_CLAIMED)) {
+                        forkMoveFoundAt = i + 1; // Beginning of the column.
+                    } else if ((column[0] == GridStatus.UNCLAIMED) && oppositeCornerMoveAt < 1) {
+                        if (i == 0 && grid.getMarkAt(9) == GridStatus.UNCLAIMED) {
+                            oppositeCornerMoveAt = 9;
+                        } else if (grid.getMarkAt(3) == GridStatus.UNCLAIMED) {
+                            oppositeCornerMoveAt = 3;
+                        }
+
+                    } else if ((column[TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS - 1] == GridStatus.UNCLAIMED) && oppositeCornerMoveAt < 1) {
+                        if (i == 0 && grid.getMarkAt(7) == GridStatus.UNCLAIMED) {
+                            oppositeCornerMoveAt = 7;
+                        } else if (grid.getMarkAt(1) == GridStatus.UNCLAIMED) {
+                            oppositeCornerMoveAt = 1;
+                        }
                     }
                 }
             }
 
-            //diagonal
+            // Diagonal Positive Gradiant (3, 5, 7):
+            GridStatus[] diagonalPositive = {grid.getMarkAt(3), grid.getMarkAt(5), grid.getMarkAt(7)};
+            int xCount = 0, oCount = 0, _Count = 0;
 
-            //block:
+            for (int i = 0; i < TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS; i++) {
+                if (diagonalPositive[i] == GridStatus.X_CLAIMED) {
+                    xCount++;
+                } else if (diagonalPositive[i] == GridStatus.O_CLAIMED) {
+                    oCount++;
+                } else {
+                    _Count++;
+                }
+            }
 
+
+            if (xCount == 2 & _Count == 1) {
+                for (int i = 0; i < TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS; i++) {
+                    if (diagonalPositive[i] == GridStatus.UNCLAIMED) {
+                        return (i * 2) + 3; // Makes winning move.
+                    }
+                }
+            } else if (oCount == 2 && _Count == 1 && blockMoveFoundAt < 1) {
+                for (int i = 0; i < TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS; i++) {
+                    if (diagonalPositive[i] == GridStatus.UNCLAIMED) {
+                        blockMoveFoundAt = (i * 2) + 3;
+                        // Tracks blocking move.
+                    }
+                }
+            }
+
+            // Diagonal Negative Gradiant (1, 5, 9:
+            GridStatus[] diagonalNegative = {grid.getMarkAt(1), grid.getMarkAt(5), grid.getMarkAt(9)};
+            xCount = 0;
+            oCount = 0;
+            _Count = 0;
+
+            for (int j = 0; j < TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS; j++) {
+                if (diagonalNegative[j] == GridStatus.X_CLAIMED) {
+                    xCount++;
+                } else if (diagonalNegative[j] == GridStatus.O_CLAIMED) {
+                    oCount++;
+                } else {
+                    _Count++;
+                }
+            }
+
+            if (xCount == 2 & _Count == 1) {
+                for (int i = 0; i < TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS; i++) {
+                    if (diagonalNegative[i] == GridStatus.UNCLAIMED) {
+                        return (i * 4) + 1; // Makes winning move.
+                    }
+                }
+            } else if (oCount == 2 && _Count == 1 && blockMoveFoundAt < 1) {
+                for (int i = 0; i < TicTacToeGrid.NUMBER_OF_ROWS_AND_COLUMNS; i++) {
+                    if (diagonalNegative[i] == GridStatus.UNCLAIMED) {
+                        blockMoveFoundAt = (i * 4) + 1;
+                        // Tracks blocking move.
+                    }
+                }
+            }
+
+            // Makes appropriate moves if win not found:
             if (blockMoveFoundAt > 0) {
+                System.out.println("b");
                 return blockMoveFoundAt;
             }
             if (forkMoveFoundAt > 0) {
+                System.out.println("f");
                 return forkMoveFoundAt;
             }
             if (oppositeCornerMoveAt > 0) {
+                System.out.println("o");
                 return oppositeCornerMoveAt;
             }
 
@@ -228,7 +299,6 @@ public class AITicTacToePlayer extends Player {
                     return sidePosition;
                 }
             }
-
         }
 
         return 0;
@@ -238,3 +308,4 @@ public class AITicTacToePlayer extends Player {
         return 0;
     }
 }
+

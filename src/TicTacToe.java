@@ -212,8 +212,6 @@ public class TicTacToe {
                 } else if (isSymbolPlaced) { // Game Continues:
                     System.out.println(grid.toString());
                     grid.incrementPlayer();
-                } else {
-                    grid.incrementPlayer();
                 }
             }
         }
