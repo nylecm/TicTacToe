@@ -1,4 +1,3 @@
-import java.nio.charset.CodingErrorAction;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -105,25 +104,7 @@ public class AITicTacToePlayer extends Player {
      */
     private Integer pickPositionAsFirst() {
         if (grid.getNumberOfMarks() == 0) { // On player's first move:
-            return 5;
-        } else if (grid.getNumberOfMarks() == 2) { // On player's second move:
-            // if there is a corner marked mark the opposite.
-            // if side marked, mark adjacent corner.
-            if (grid.getMarkAt(1) == GridStatus.O_CLAIMED) {
-                return 9;
-            } else if (grid.getMarkAt(3) == GridStatus.O_CLAIMED) {
-                return 7;
-            } else if (grid.getMarkAt(7) == GridStatus.O_CLAIMED) {
-                return 3;
-            } else if (grid.getMarkAt(9) == GridStatus.O_CLAIMED) {
-                return 1;
-            } else if (grid.getMarkAt(4) == GridStatus.O_CLAIMED
-                    || grid.getMarkAt(8) == GridStatus.O_CLAIMED) {
-                return 7;
-            } else if (grid.getMarkAt(2) == GridStatus.O_CLAIMED
-                    || grid.getMarkAt(4) == GridStatus.O_CLAIMED) {
-                return 3;
-            }
+            return pickRandomMove();
         } else { // On player's third or later move:
             // Track the grid number of blocking/ forking/ opp. corner move.
             int blockMoveFoundAt = 0;
@@ -246,6 +227,8 @@ public class AITicTacToePlayer extends Player {
             if (oppositeCornerMoveAt > 0) {
                 return oppositeCornerMoveAt;
             }
+
+
             // Makes empty corner
             int[] cornerPositions = {1, 3, 7, 9};
 
