@@ -67,32 +67,32 @@ public class AITicTacToePlayer extends Player {
         switch (difficulty) {
             case EASY: // Algorithmic move picked 5/10 times.
                 if (random <= 5) {
-                    if (grid.getNumberOfMarks() % 2 == 0) { // This AI player is playing first.
+                    if (isPlayingFirst()) { // This AI player is playing first.
                         return pickPositionAsFirst().toString();
                     } else { // This AI player is playing second.
                         return pickPositionAsSecond().toString();
                     }
                 } else {
-                    return pickRandomMove().toString();
+                    return makeRandomMove().toString();
                 }
             case MEDIUM: // Algorithmic move picked 7/10 times.
                 if (random <= 7) {
-                    if (grid.getNumberOfMarks() % 2 == 0) { // This AI player is playing first.
+                    if (isPlayingFirst()) { // This AI player is playing first.
                         return pickPositionAsFirst().toString();
                     } else { // This AI player is playing second.
                         return pickPositionAsSecond().toString();
                     }
                 } else {
-                    return pickRandomMove().toString();
+                    return makeRandomMove().toString();
                 }
             case HARD: // Algorithmic move always picked.
-                if (grid.getNumberOfMarks() % 2 == 0) { // This AI player is playing first.
+                if (isPlayingFirst()) { // This AI player is playing first.
                     return pickPositionAsFirst().toString();
                 } else { // This AI player is playing second.
                     return pickPositionAsSecond().toString();
                 }
         }
-        return pickRandomMove().toString();
+        return makeRandomMove().toString();
     }
 
     /**
@@ -104,7 +104,7 @@ public class AITicTacToePlayer extends Player {
      */
     private Integer pickPositionAsFirst() {
         if (grid.getNumberOfMarks() == 0) { // On player's first move:
-            return pickRandomMove();
+            return makeRandomMove();
         } else { // On player's third or later move:
             // Track the grid number of blocking/ forking/ opp. corner move.
             int blockMoveFoundAt = 0;
@@ -139,7 +139,7 @@ public class AITicTacToePlayer extends Player {
                     } else if ((row[0] == (GridStatus.UNCLAIMED) && (row[1] == GridStatus.UNCLAIMED) && (row[2] == GridStatus.X_CLAIMED))) {
                         forkMoveFoundAt = (i * 3) + 1; //Beginning of the row.
 
-                    } else if ((row[0] == GridStatus.UNCLAIMED) && oppositeCornerMoveAt < 1) {
+                    } else if ((row[0] == GridStatus.UNCLAIMED) && oppositeCornerMoveAt < 1) { // todo improve if statements
                         if (i == 0 && grid.getMarkAt(9) == GridStatus.UNCLAIMED) {
                             oppositeCornerMoveAt = 9;
                         } else if (grid.getMarkAt(3) == GridStatus.UNCLAIMED) {
@@ -228,6 +228,10 @@ public class AITicTacToePlayer extends Player {
                 return oppositeCornerMoveAt;
             }
 
+            // Makes centre move:
+            if (grid.getMarkAt(5) == GridStatus.UNCLAIMED) {
+                return 5;
+            }
 
             // Makes empty corner
             int[] cornerPositions = {1, 3, 7, 9};
@@ -247,7 +251,7 @@ public class AITicTacToePlayer extends Player {
             }
         }
 
-        return pickRandomMove();
+        return makeRandomMove();
     }
 
     /**
@@ -256,8 +260,132 @@ public class AITicTacToePlayer extends Player {
      *
      * @return a random number between 1 and 9.
      */
-    private Integer pickPositionAsSecond() {
-        return pickRandomMove();
+    private Integer pickPositionAsSecond() { //todo
+        if (grid.getNumberOfMarks() == 0) { // On player's first move:
+            if (grid.getMarkAt(5) == GridStatus.X_CLAIMED) { // X first takes centre.
+                return makeCornerMove();
+            } else if (grid.getMarkAt(1) == GridStatus.X_CLAIMED || // X first takes corner.
+                    grid.getMarkAt(3) == GridStatus.X_CLAIMED ||
+                    grid.getMarkAt(7) == GridStatus.X_CLAIMED ||
+                    grid.getMarkAt(9) == GridStatus.X_CLAIMED) {
+                return 5; //Centre move.
+            } else { // X first takes side.
+                return makeSideMove(); // or return 5; // todo make centre move too.
+            }
+        } else {
+            // For every row:
+            for (int i = 0; i < 3; i++) {
+                //Counts the number of cells in a row with a certain status:
+                GridStatus[] row = grid.getRow(i);
+
+                // Array of 3 int values that holds the number of Xs, Os, and
+                // unclaimed squares respectively in a line.
+                int[] lineStatus = getLineStatus(row);
+
+                // 2Xs & 1 unclaimed we can block X:
+                if (lineStatus[0] == 2 && lineStatus[2] == 1) {
+                    for (int j = 0; j < 3; j++) {
+                        if (row[j] == GridStatus.UNCLAIMED) {
+                            return (i * 3) + 1 + j; // Makes the blocking move.
+                        }
+                    }
+                }
+            }
+            // For every column:
+            for (int i = 0; i < 3; i++) {
+                GridStatus[] column = grid.getColumn(i);
+
+                // Array of 3 int values that holds the number of Xs, Os, and
+                // unclaimed squares respectively in a line.
+                int[] lineStatus = getLineStatus(column);
+
+                // 2Xs & 1 unclaimed we can block X:
+                if (lineStatus[0] == 2 && lineStatus[2] == 1) {
+                    for (int j = 0; j < 3; j++) {
+                        if (column[j] == GridStatus.UNCLAIMED) {
+                            return (j * 3) + 1 + i; // Makes the blocking move.
+                        }
+                    }
+                }
+            }
+
+            // Diagonal Positive Gradiant (3, 5, 7):
+            GridStatus[] diagonalPositive = {grid.getMarkAt(3), grid.getMarkAt(5), grid.getMarkAt(7)};
+            int[] lineStatus = getLineStatus(diagonalPositive);
+
+            if (lineStatus[0] == 2 && lineStatus[2] == 1) {
+                for (int i = 0; i < 3; i++) {
+                    if (diagonalPositive[i] == GridStatus.UNCLAIMED) {
+                        return (i * 2) + 3; // Tracks blocking move.
+                    }
+                }
+            }
+            // Diagonal Negative Gradiant (1, 5, 9):
+            GridStatus[] diagonalNegative = {grid.getMarkAt(1), grid.getMarkAt(5), grid.getMarkAt(9)};
+            lineStatus = getLineStatus(diagonalNegative);
+
+            if (lineStatus[0] == 2 && lineStatus[2] == 1) {
+                for (int i = 0; i < 3; i++) {
+                    if (diagonalNegative[i] == GridStatus.UNCLAIMED) {
+                        return (i * 4) + 1; // Tracks blocking move.
+                    }
+                }
+            }
+
+            // Makes appropriate moves if win not found:
+
+
+            // Checks for opposite corner moves.
+            int oppositeCornerMoveAt = makeOppositeCornerMove();
+
+            if (oppositeCornerMoveAt > 0) { //todo
+                return oppositeCornerMoveAt;
+            }
+
+            // Makes centre move:
+            if (grid.getMarkAt(5) == GridStatus.UNCLAIMED) {
+                return 5;
+            }
+
+            // Makes empty corner
+            int[] cornerPositions = {1, 3, 7, 9};
+
+            for (int cornerPosition : cornerPositions) {
+                if (grid.getMarkAt(cornerPosition) == GridStatus.UNCLAIMED) {
+                    return cornerPosition;
+                }
+            }
+            // Makes empty side move.
+            int[] sidePositions = {2, 4, 6, 8};
+
+            for (int sidePosition : sidePositions) {
+                if (grid.getMarkAt(sidePosition) == GridStatus.UNCLAIMED) {
+                    return sidePosition;
+                }
+            }
+            return makeRandomMove();
+        }
+    }
+
+    private Integer makeSideMove() {
+        // Makes empty side move
+        int[] sidePositions = {2, 4, 6, 8};
+        return makeMoveOutOfArray(sidePositions);
+    }
+
+    private Integer makeCornerMove() {
+        // Makes empty corner move
+        int[] cornerPositions = {1, 3, 7, 9};
+        return makeMoveOutOfArray(cornerPositions);
+    }
+
+    private Integer makeMoveOutOfArray(int[] positions) {
+        for (int cornerPosition : positions) {
+            if (grid.getMarkAt(cornerPosition) == GridStatus.UNCLAIMED) {
+                return cornerPosition;
+            }
+        }
+        return 0;
     }
 
     /**
@@ -265,7 +393,7 @@ public class AITicTacToePlayer extends Player {
      *
      * @return a random number between 1 and 9.
      */
-    private Integer pickRandomMove() {
+    private Integer makeRandomMove() {
         while (true) {
             int randomPosition = ThreadLocalRandom.current().nextInt(1, 10);
             if (grid.getMarkAt(randomPosition) == GridStatus.UNCLAIMED) {
@@ -297,5 +425,25 @@ public class AITicTacToePlayer extends Player {
             }
         }
         return lineStatus;
+    }
+
+    private Integer makeOppositeCornerMove() {
+        GridStatus otherPlayersMark = isPlayingFirst() ? GridStatus.O_CLAIMED : GridStatus.X_CLAIMED;
+
+        if (grid.getMarkAt(1) == otherPlayersMark && grid.getMarkAt(9) == GridStatus.UNCLAIMED) {
+            return 9;
+        } else if (grid.getMarkAt(3) == otherPlayersMark && grid.getMarkAt(7) == GridStatus.UNCLAIMED) {
+            return 7;
+        } else if (grid.getMarkAt(7) == otherPlayersMark && grid.getMarkAt(3) == GridStatus.UNCLAIMED) {
+            return 3;
+        } else if (grid.getMarkAt(9) == otherPlayersMark && grid.getMarkAt(1) == GridStatus.UNCLAIMED) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    private boolean isPlayingFirst() {
+        return grid.getNumberOfMarks() % 2 == 0;
     }
 }
