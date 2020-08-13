@@ -100,6 +100,7 @@ public class TicTacToe {
         System.out.println("Enter 1 for two-player.");
         System.out.println("Enter 2 to play as first player(X) against AI.");
         System.out.println("Enter 3 to play as second player(O) against AI.");
+        System.out.println("Enter 4 to see two AI players play against each other!.");
 
         boolean isValidGameModeEntered = false;
 
@@ -133,12 +134,20 @@ public class TicTacToe {
                     PLAYERS[1] = new HumanPlayer(player2Name);
 
                     isValidGameModeEntered = true;
+                } else if (gameMode == 4) {
+                    PLAYERS[0] = new AITicTacToePlayer("AI Player 1",
+                            aiDifficultyInput(in), grid);
+
+                    PLAYERS[1] = new AITicTacToePlayer("AI Player 2",
+                            aiDifficultyInput(in), grid);
+
+                    isValidGameModeEntered = true;
                 } else {
-                    System.out.println("Game mode needs to be 1, 2, or 3.");
+                    System.out.println("Game mode needs to be 1, 2, 3, or 4.");
                 }
             } catch (NumberFormatException ex) {
                 System.out.println("Numeric input required. Please enter either " +
-                        "1, 2, or 3.");
+                        "1, 2, 3, or 4.");
             }
         }
     }
