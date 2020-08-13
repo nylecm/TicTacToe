@@ -109,7 +109,6 @@ public class AITicTacToePlayer extends Player {
             // Track the grid number of blocking/ forking/ opp. corner move.
             int blockMoveFoundAt = 0;
             int forkMoveFoundAt = 0;
-            int oppositeCornerMoveAt = 0;
 
             // For every row:
             for (int i = 0; i < 3; i++) {
@@ -138,19 +137,6 @@ public class AITicTacToePlayer extends Player {
                         forkMoveFoundAt = (i * 3) + 3; //End of the row.
                     } else if ((row[0] == (GridStatus.UNCLAIMED) && (row[1] == GridStatus.UNCLAIMED) && (row[2] == GridStatus.X_CLAIMED))) {
                         forkMoveFoundAt = (i * 3) + 1; //Beginning of the row.
-
-                    } else if ((row[0] == GridStatus.UNCLAIMED) && oppositeCornerMoveAt < 1) { // todo improve if statements
-                        if (i == 0 && grid.getMarkAt(9) == GridStatus.UNCLAIMED) {
-                            oppositeCornerMoveAt = 9;
-                        } else if (grid.getMarkAt(3) == GridStatus.UNCLAIMED) {
-                            oppositeCornerMoveAt = 3;
-                        }
-                    } else if ((row[2] == GridStatus.UNCLAIMED) && oppositeCornerMoveAt < 1) {
-                        if (i == 0 && grid.getMarkAt(7) == GridStatus.UNCLAIMED) {
-                            oppositeCornerMoveAt = 7;
-                        } else if (grid.getMarkAt(1) == GridStatus.UNCLAIMED) {
-                            oppositeCornerMoveAt = 1;
-                        }
                     }
                 }
             }
@@ -175,7 +161,6 @@ public class AITicTacToePlayer extends Player {
                         }
                     }
                 } else if (i == 0 || i == 2 && (blockMoveFoundAt < 1 || forkMoveFoundAt < 1) && (lineStatus[2] > 0)) {
-
                     if ((column[0] == (GridStatus.X_CLAIMED)) && (column[1] == GridStatus.UNCLAIMED) && (column[2] == GridStatus.UNCLAIMED)) {
                         forkMoveFoundAt = i + 7; // End of the column.
                     } else if ((column[0] == (GridStatus.UNCLAIMED) && (column[1] == GridStatus.UNCLAIMED) && column[2] == GridStatus.X_CLAIMED)) {
@@ -224,34 +209,11 @@ public class AITicTacToePlayer extends Player {
             if (forkMoveFoundAt > 0) {
                 return forkMoveFoundAt;
             }
-            if (oppositeCornerMoveAt > 0) {
-                return oppositeCornerMoveAt;
-            }
 
-            // Makes centre move:
-            if (grid.getMarkAt(5) == GridStatus.UNCLAIMED) {
-                return 5;
-            }
-
-            // Makes empty corner
-            int[] cornerPositions = {1, 3, 7, 9};
-
-            for (int cornerPosition : cornerPositions) {
-                if (grid.getMarkAt(cornerPosition) == GridStatus.UNCLAIMED) {
-                    return cornerPosition;
-                }
-            }
-            // Makes empty side move.
-            int[] sidePositions = {2, 4, 6, 8};
-
-            for (int sidePosition : sidePositions) {
-                if (grid.getMarkAt(sidePosition) == GridStatus.UNCLAIMED) {
-                    return sidePosition;
-                }
-            }
+            // Checks for opposite corner move, otherwise make centre move,
+            // then make empty corner move, then make empty side move.
+            return makeOppositeCornerCentreCornerOrSideMove();
         }
-
-        return makeRandomMove();
     }
 
     /**
@@ -261,7 +223,7 @@ public class AITicTacToePlayer extends Player {
      * @return a random number between 1 and 9.
      */
     private Integer pickPositionAsSecond() { //todo
-        if (grid.getNumberOfMarks() == 0) { // On player's first move:
+        if (grid.getNumberOfMarks() == 1) { // On player's first move:
             if (grid.getMarkAt(5) == GridStatus.X_CLAIMED) { // X first takes centre.
                 return makeCornerMove();
             } else if (grid.getMarkAt(1) == GridStatus.X_CLAIMED || // X first takes corner.
@@ -332,38 +294,9 @@ public class AITicTacToePlayer extends Player {
                 }
             }
 
-            // Makes appropriate moves if win not found:
-
-
-            // Checks for opposite corner moves.
-            int oppositeCornerMoveAt = makeOppositeCornerMove();
-
-            if (oppositeCornerMoveAt > 0) { //todo
-                return oppositeCornerMoveAt;
-            }
-
-            // Makes centre move:
-            if (grid.getMarkAt(5) == GridStatus.UNCLAIMED) {
-                return 5;
-            }
-
-            // Makes empty corner
-            int[] cornerPositions = {1, 3, 7, 9};
-
-            for (int cornerPosition : cornerPositions) {
-                if (grid.getMarkAt(cornerPosition) == GridStatus.UNCLAIMED) {
-                    return cornerPosition;
-                }
-            }
-            // Makes empty side move.
-            int[] sidePositions = {2, 4, 6, 8};
-
-            for (int sidePosition : sidePositions) {
-                if (grid.getMarkAt(sidePosition) == GridStatus.UNCLAIMED) {
-                    return sidePosition;
-                }
-            }
-            return makeRandomMove();
+            // Checks for opposite corner move, otherwise make centre move,
+            // then make empty corner move, then make empty side move.
+            return makeOppositeCornerCentreCornerOrSideMove();
         }
     }
 
@@ -386,6 +319,35 @@ public class AITicTacToePlayer extends Player {
             }
         }
         return 0;
+    }
+
+    private Integer makeOppositeCornerCentreCornerOrSideMove() {
+        // Checks for opposite corner moves.
+        int oppositeCornerMoveAt = makeOppositeCornerMove();
+
+        if (oppositeCornerMoveAt > 0) {
+            return oppositeCornerMoveAt;
+        }
+
+        // Makes centre move:
+        if (grid.getMarkAt(5) == GridStatus.UNCLAIMED) {
+            return 5;
+        }
+
+        // Makes empty corner
+        int cornerMoveAt = makeCornerMove();
+
+        if (cornerMoveAt > 0) {
+            return cornerMoveAt;
+        }
+
+        // Makes empty side move.
+        int sideMoveAt = makeCornerMove();
+
+        if (sideMoveAt > 0) {
+            return cornerMoveAt;
+        }
+        return makeRandomMove();
     }
 
     /**
