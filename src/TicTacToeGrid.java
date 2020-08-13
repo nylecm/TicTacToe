@@ -93,7 +93,7 @@ public class TicTacToeGrid {
      * @throws IllegalArgumentException when grid position is out of range.
      */
     private int convertPositionNumberToColumnNumber(int gridPosition) throws
-            IllegalArgumentException {
+            IndexOutOfBoundsException {
         if (gridPosition < 1 || gridPosition > NUMBER_OF_GRID_POSITIONS) {
             throw new IndexOutOfBoundsException("Grid Position cannot be less " +
                     "than 1 or more than " + NUMBER_OF_GRID_POSITIONS + ".");
@@ -118,7 +118,15 @@ public class TicTacToeGrid {
         return grid[gridRow][gridColumn] == GridStatus.UNCLAIMED;
     }
 
-    public GridStatus getMarkAt(int gridPosition) {
+    /**
+     * Gets the mark at a specified grid position.
+     *
+     * @param gridPosition the grid position at which to return the mark at.
+     * @return the mark at the specified grid position.
+     * @throws IndexOutOfBoundsException when grid position is invalid.
+     */
+    public GridStatus getMarkAt(int gridPosition) throws
+            IndexOutOfBoundsException {
         return grid[convertPositionNumberToRowNumber(gridPosition)]
                 [convertPositionNumberToColumnNumber(gridPosition)];
     }

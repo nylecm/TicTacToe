@@ -300,27 +300,6 @@ public class AITicTacToePlayer extends Player {
         }
     }
 
-    private Integer makeSideMove() {
-        // Makes empty side move
-        int[] sidePositions = {2, 4, 6, 8};
-        return makeMoveOutOfArray(sidePositions);
-    }
-
-    private Integer makeCornerMove() {
-        // Makes empty corner move
-        int[] cornerPositions = {1, 3, 7, 9};
-        return makeMoveOutOfArray(cornerPositions);
-    }
-
-    private Integer makeMoveOutOfArray(int[] positions) {
-        for (int cornerPosition : positions) {
-            if (grid.getMarkAt(cornerPosition) == GridStatus.UNCLAIMED) {
-                return cornerPosition;
-            }
-        }
-        return 0;
-    }
-
     private Integer makeOppositeCornerCentreCornerOrSideMove() {
         // Checks for opposite corner moves.
         int oppositeCornerMoveAt = makeOppositeCornerMove();
@@ -351,7 +330,46 @@ public class AITicTacToePlayer extends Player {
     }
 
     /**
-     * Makes a random move.
+     * Finds a grid position where a side move can be made.
+     *
+     * @return the grid number of the empty side, or 0 if none are found.
+     */
+    private Integer makeSideMove() {
+        // Makes empty side move
+        int[] sidePositions = {2, 4, 6, 8};
+        return makeMoveOutOfArray(sidePositions);
+    }
+
+    /**
+     * Finds a grid position where a corner move can be made.
+     *
+     * @return the grid number of the empty side, or 0 if none are found.
+     */
+    private Integer makeCornerMove() {
+        // Makes empty corner move
+        int[] cornerPositions = {1, 3, 7, 9};
+        return makeMoveOutOfArray(cornerPositions);
+    }
+
+    /**
+     * Finds an empty grid position, out of an array of grid positions where
+     * a move can be made.
+     *
+     * @param positions the array of grid positions where a move ought to be made.
+     * @return the first empty grid position on the array, or 0 if none are empty.
+     */
+    private Integer makeMoveOutOfArray(int[] positions) {
+        for (int cornerPosition : positions) {
+            if (grid.getMarkAt(cornerPosition) == GridStatus.UNCLAIMED) {
+                return cornerPosition;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Finds a random empty position on the game grid. Should only be called if
+     * there is an empty position on the grid.
      *
      * @return a random number between 1 and 9.
      */
@@ -365,7 +383,7 @@ public class AITicTacToePlayer extends Player {
     }
 
     /**
-     * Returns the statuses of a line of tic tac toe grid squares.
+     * Finds the statuses of a line of tic tac toe grid squares.
      *
      * @param line a line of tic tac toe grid squares.
      * @return an array of 3 int values that holds the number of Xs, Os, and
@@ -389,6 +407,11 @@ public class AITicTacToePlayer extends Player {
         return lineStatus;
     }
 
+    /**
+     * Finds the first corner where an opposite corner move can be made.
+     *
+     * @return the grid number of the opposite corner move, or 0 if none are found.
+     */
     private Integer makeOppositeCornerMove() {
         GridStatus otherPlayersMark = isPlayingFirst() ? GridStatus.O_CLAIMED : GridStatus.X_CLAIMED;
 
@@ -405,6 +428,11 @@ public class AITicTacToePlayer extends Player {
         return 0;
     }
 
+    /**
+     * Used to tell if the current player is playing first.
+     *
+     * @return true if current player is the first player.
+     */
     private boolean isPlayingFirst() {
         return grid.getNumberOfMarks() % 2 == 0;
     }
