@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 /**
- * <b>File Name: </b> <p>TicTacToe.java</p>
+ * <b>File Name: </b> <p>TicTacToeCommandLine.java</p>
  * <b>Description: </b>
  * <p>
  * Handles the gameplay sequence of the tic tac toe game. Currently supports
@@ -10,7 +10,7 @@ import java.util.Scanner;
  *
  * @author nylecm
  */
-public class TicTacToe {
+public class TicTacToeCommandLine {
     // Game Configuration:
     private static final int NUM_OF_PAYERS = 2;
     private static final Player[] PLAYERS = new Player[NUM_OF_PAYERS];
@@ -32,18 +32,9 @@ public class TicTacToe {
             " I for instructions.";
 
     /**
-     * The entry point of application.
-     *
-     * @param args the input arguments
-     */
-    public static void main(String[] args) {
-        playTicTacToe();
-    }
-
-    /**
      * Contains the main gameplay sequence for the game.
      */
-    private static void playTicTacToe() {
+    public static void playTicTacToe() {
         System.out.println(WELCOME_PROMPT);
 
         printInstructions();
