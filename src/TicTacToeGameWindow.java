@@ -3,7 +3,9 @@ import java.awt.*;
 
 public class TicTacToeGameWindow extends JFrame {
     public final static int WIDTH = 300;
-    public final static int HEIGHT = 300;
+    public final static int HEIGHT = 320;
+
+    GridPositionButton[] gridPositionButtons = new GridPositionButton[TicTacToeGrid.NUMBER_OF_GRID_POSITIONS];
 
     public TicTacToeGameWindow() {
         createComponents();
@@ -23,24 +25,30 @@ public class TicTacToeGameWindow extends JFrame {
         JPanel grid = new JPanel();
         grid.setLayout(new GridLayout(3, 3));
 
-        grid.add(new JButton("1"));
-        grid.add(new JButton("2"));
-        grid.add(new JButton("3"));
-        grid.add(new JButton("4"));
-        grid.add(new JButton("5"));
-        grid.add(new JButton("6"));
-        grid.add(new JButton("7"));
-        grid.add(new JButton("8"));
-        grid.add(new JButton("9"));
+        for (int i = 0; i < gridPositionButtons.length; i++) {
+            gridPositionButtons[i] = new GridPositionButton(i + 1);
+            grid.add(gridPositionButtons[i]);
+        }
+
+        grid.setSize(WIDTH, WIDTH);
+
+        JPanel bottom = new JPanel();
+        bottom.setLayout(new BorderLayout());
+        bottom.setSize(WIDTH, 20);
+
+        JLabel winCount = new JLabel("Player 1: x Player 2: y");
+        JButton endGame = new JButton("Finish Game");
+
+        bottom.add(winCount, BorderLayout.WEST);
+        bottom.add(endGame, BorderLayout.EAST);
+
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(grid, BorderLayout.CENTER);
-        add(panel);
-    }
+        panel.add(bottom, BorderLayout.SOUTH);
 
-    public static void main(String[] args) {
-        JFrame newWin = new TicTacToeGameWindow();
-        newWin.setVisible(true);
+
+        add(panel);
     }
 }
