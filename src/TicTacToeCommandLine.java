@@ -10,16 +10,12 @@ import java.util.Scanner;
  *
  * @author nylecm
  */
-public class TicTacToeCommandLine {
-    // Game Configuration:
-    private static final int NUM_OF_PAYERS = 2;
-    private static final Player[] PLAYERS = new Player[NUM_OF_PAYERS];
-
+public class TicTacToeCommandLine extends TicTacToeGame {
     // Messages:
     private static final String WELCOME_PROMPT = "Welcome to TicTacToe!\n";
     private static final String CROSS_WORD = "cross";
-    private static final String CROSS_SYMBOL = "X";
     private static final String NAUGHT_WORD = "naught";
+    private static final String CROSS_SYMBOL = "X";
     private static final String NAUGHT_SYMBOL = "O";
     private static final String PLAYER_1_NAME_PROMPT =
             "Please enter player 1's (" + CROSS_SYMBOL + ") name: ";
@@ -31,10 +27,14 @@ public class TicTacToeCommandLine {
     private static final String INPUT_PROMPT = "Input position number, or press" +
             " I for instructions.";
 
+    public TicTacToeCommandLine() {
+        playTicTacToe();
+    }
+
     /**
      * Contains the main gameplay sequence for the game.
      */
-    public static void playTicTacToe() {
+    protected void playTicTacToe() {
         System.out.println(WELCOME_PROMPT);
 
         printInstructions();
@@ -44,8 +44,7 @@ public class TicTacToeCommandLine {
         while (isGameToRepeat) {
             Scanner in = new Scanner(System.in);
 
-            TicTacToeGrid grid = new TicTacToeGrid();
-            setUpGame(in, grid); // Player input of game mode, and their name(s).
+            setUpGame(in); // Player input of game mode, and their name(s).
 
             // True when it's determined that the game should end.
             boolean isGameFinished = false;
@@ -71,7 +70,7 @@ public class TicTacToeCommandLine {
                         System.out.println("Player: " + curPlayer.getName() + " has made their move.");
                     }
                 }
-                isGameFinished = playerMoveInput(grid, curPlayer);
+                isGameFinished = playerMoveInput(curPlayer);
             }
             // Game Finished.
 
@@ -83,10 +82,9 @@ public class TicTacToeCommandLine {
      * Takes input from the player before the game is started; allowing them
      * to select game mode (two player or AI mode), as well as enter their name(s).
      *
-     * @param in   the scanner being used to take user input.
-     * @param grid the tic tac toe grid object in use.
+     * @param in the scanner being used to take user input.
      */
-    private static void setUpGame(Scanner in, TicTacToeGrid grid) {
+    private void setUpGame(Scanner in) {
         System.out.println("Select game mode: \n");
         System.out.println("Enter 1 for two-player.");
         System.out.println("Enter 2 to play as first player(X) against AI.");
@@ -149,7 +147,7 @@ public class TicTacToeCommandLine {
      * @param in the scanner being used to take user input.
      * @return the name the user entered.
      */
-    private static String nameInput(Scanner in, String prompt) {
+    private String nameInput(Scanner in, String prompt) {
         boolean isNameEntered = false;
         String name = "";
 
@@ -168,7 +166,7 @@ public class TicTacToeCommandLine {
      * @param in in the scanner being used to take user input.
      * @return the AI difficulty selected by the user,
      */
-    private static AIDifficulty aiDifficultyInput(Scanner in) {
+    private AIDifficulty aiDifficultyInput(Scanner in) {
         while (true) {
             System.out.println("\nSelect AI difficulty: \n");
             System.out.println("Enter e for an easy AI.");
@@ -192,11 +190,10 @@ public class TicTacToeCommandLine {
      * asking for instructions by pressing 'I' or it could be the player wanting
      * to place their mark at a given position.
      *
-     * @param grid      the tic tac toe grid object in use.
      * @param curPlayer the current player making a move.
      * @return true if game is finished.
      */
-    private static boolean playerMoveInput(TicTacToeGrid grid, Player curPlayer) {
+    private boolean playerMoveInput(Player curPlayer) {
         // True when the player marks the board.
         boolean isSymbolPlaced = false;
         // Must be false as the game is still asking a player to mark the board.
@@ -229,10 +226,10 @@ public class TicTacToeCommandLine {
 
                 if (isSymbolPlaced && grid.isWin()) { // Game won:
                     isGameFinished = true;
-                    winMessage(grid);
+                    winMessage();
                 } else if (isSymbolPlaced && grid.isMaxMovesMade()) { // Tie:
                     isGameFinished = true;
-                    tieMessage(grid);
+                    tieMessage();
                 } else if (isSymbolPlaced) { // Game Continues:
                     System.out.println(grid.toString());
                     grid.incrementPlayer();
@@ -244,20 +241,16 @@ public class TicTacToeCommandLine {
 
     /**
      * Shows a message to congratulate the winning player.
-     *
-     * @param grid the grid from which the number of the winning player is fetched.
      */
-    private static void winMessage(TicTacToeGrid grid) {
+    private void winMessage() {
         System.out.println(grid.toString());
         System.out.println("\nPlayer " + grid.getNextPlayer() + " (" + PLAYERS[grid.getNextPlayer() - 1].getName() + ") wins.");
     }
 
     /**
      * Notifies the user that the game has been tied.
-     *
-     * @param grid the grid from which the number of the winning player is fetched.
      */
-    private static void tieMessage(TicTacToeGrid grid) {
+    private void tieMessage() {
         System.out.println(grid.toString());
         System.out.println("\nThere has been a tie.");
     }
@@ -269,7 +262,7 @@ public class TicTacToeCommandLine {
      * @param in the scanner being used to take user input.
      * @return true if the user wants to play again.
      */
-    private static boolean isGameToRepeat(Scanner in) {
+    private boolean isGameToRepeat(Scanner in) {
         boolean isGameToRepeat = false;
         boolean isValidInput = false;
         System.out.println("Do you want to play again (Type Y/n)?");
@@ -294,7 +287,7 @@ public class TicTacToeCommandLine {
     /**
      * Prints the game instructions on the screen.
      */
-    private static void printInstructions() {
+    private void printInstructions() {
         System.out.println("How to Play:\n");
         System.out.println("Every turn enter the position at which you want your " +
                 "symbol (O or X) to be placed.");

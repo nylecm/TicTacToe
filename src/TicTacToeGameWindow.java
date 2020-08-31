@@ -42,13 +42,17 @@ public class TicTacToeGameWindow extends JFrame {
         bottom.add(winCount, BorderLayout.WEST);
         bottom.add(endGame, BorderLayout.EAST);
 
-
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(grid, BorderLayout.CENTER);
         panel.add(bottom, BorderLayout.SOUTH);
 
-
         add(panel);
+    }
+
+    private void gridButtonPressed(GridPositionButton gridPositionButton) {
+        if (!gridPositionButton.getText().equals(GridStatus.X_CLAIMED) || gridPositionButton.getText().equals(GridStatus.O_CLAIMED)) {
+            gridPositionButton.getText(); //Mark grid at this pos
+        }
     }
 }
