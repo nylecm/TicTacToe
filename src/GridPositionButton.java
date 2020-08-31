@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.xml.bind.annotation.XmlType;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GridPositionButton extends JButton {
     private final Integer gridPosition;

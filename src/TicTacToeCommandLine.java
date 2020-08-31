@@ -15,8 +15,6 @@ public class TicTacToeCommandLine extends TicTacToeGame {
     private static final String WELCOME_PROMPT = "Welcome to TicTacToe!\n";
     private static final String CROSS_WORD = "cross";
     private static final String NAUGHT_WORD = "naught";
-    private static final String CROSS_SYMBOL = "X";
-    private static final String NAUGHT_SYMBOL = "O";
     private static final String PLAYER_1_NAME_PROMPT =
             "Please enter player 1's (" + CROSS_SYMBOL + ") name: ";
     private static final String PLAYER_2_NAME_PROMPT =
