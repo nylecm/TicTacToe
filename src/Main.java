@@ -6,7 +6,6 @@ public class Main {
         } else {
             TicTacToeMainMenu menu = new TicTacToeMainMenu();
             menu.setVisible(true);
-
         }
     }
 }

@@ -52,17 +52,17 @@ public class TicTacToeCommandLine extends TicTacToeGame {
                 Player curPlayer;
 
                 if (grid.getNextPlayer() == 1) {
-                    curPlayer = PLAYERS[0];
+                    curPlayer = players[0];
                     if (curPlayer.getClass() == HumanPlayer.class) {
-                        System.out.println(PLAYERS[0].getName() + INPUT_PROMPT_FIRST_ATTEMPT +
+                        System.out.println(players[0].getName() + INPUT_PROMPT_FIRST_ATTEMPT +
                                 CROSS_WORD + ": ");
                     } else {
                         System.out.println("Player: " + curPlayer.getName() + " has made their move.");
                     }
                 } else {
-                    curPlayer = PLAYERS[1];
+                    curPlayer = players[1];
                     if (curPlayer.getClass() == HumanPlayer.class) {
-                        System.out.println(PLAYERS[1].getName() + INPUT_PROMPT_FIRST_ATTEMPT +
+                        System.out.println(players[1].getName() + INPUT_PROMPT_FIRST_ATTEMPT +
                                 NAUGHT_WORD + ": ");
                     } else {
                         System.out.println("Player: " + curPlayer.getName() + " has made their move.");
@@ -99,33 +99,33 @@ public class TicTacToeCommandLine extends TicTacToeGame {
                 // Creates players based on the game mode selected:
                 if (gameMode == 1) {
                     String player1Name = nameInput(in, PLAYER_1_NAME_PROMPT);
-                    PLAYERS[0] = new HumanPlayer(player1Name);
+                    players[0] = new HumanPlayer(player1Name);
 
                     String player2Name = nameInput(in, PLAYER_2_NAME_PROMPT);
-                    PLAYERS[1] = new HumanPlayer(player2Name);
+                    players[1] = new HumanPlayer(player2Name);
 
                     isValidGameModeEntered = true;
                 } else if (gameMode == 2) {
                     String player1Name = nameInput(in, PLAYER_1_NAME_PROMPT);
-                    PLAYERS[0] = new HumanPlayer(player1Name);
+                    players[0] = new HumanPlayer(player1Name);
 
-                    PLAYERS[1] = new AITicTacToePlayer("AI Player 2",
+                    players[1] = new AITicTacToePlayer("AI Player 2",
                             aiDifficultyInput(in), grid);
 
                     isValidGameModeEntered = true;
                 } else if (gameMode == 3) {
-                    PLAYERS[0] = new AITicTacToePlayer("AI Player 1",
+                    players[0] = new AITicTacToePlayer("AI Player 1",
                             aiDifficultyInput(in), grid);
 
                     String player2Name = nameInput(in, PLAYER_2_NAME_PROMPT);
-                    PLAYERS[1] = new HumanPlayer(player2Name);
+                    players[1] = new HumanPlayer(player2Name);
 
                     isValidGameModeEntered = true;
                 } else if (gameMode == 4) {
-                    PLAYERS[0] = new AITicTacToePlayer("AI Player 1",
+                    players[0] = new AITicTacToePlayer("AI Player 1",
                             aiDifficultyInput(in), grid);
 
-                    PLAYERS[1] = new AITicTacToePlayer("AI Player 2",
+                    players[1] = new AITicTacToePlayer("AI Player 2",
                             aiDifficultyInput(in), grid);
 
                     isValidGameModeEntered = true;
@@ -242,7 +242,7 @@ public class TicTacToeCommandLine extends TicTacToeGame {
      */
     private void winMessage() {
         System.out.println(grid.toString());
-        System.out.println("\nPlayer " + grid.getNextPlayer() + " (" + PLAYERS[grid.getNextPlayer() - 1].getName() + ") wins.");
+        System.out.println("\nPlayer " + grid.getNextPlayer() + " (" + players[grid.getNextPlayer() - 1].getName() + ") wins.");
     }
 
     /**

@@ -222,7 +222,7 @@ public class AITicTacToePlayer extends Player {
      *
      * @return a random number between 1 and 9.
      */
-    private Integer pickPositionAsSecond() { //todo
+    private Integer pickPositionAsSecond() {
         if (grid.getNumberOfMarks() == 1) { // On player's first move:
             if (grid.getMarkAt(5) == GridStatus.X_CLAIMED) { // X first takes centre.
                 return makeCornerMove();

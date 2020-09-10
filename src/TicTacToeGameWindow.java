@@ -13,6 +13,15 @@ public class TicTacToeGameWindow extends JFrame {
 
     public TicTacToeGameWindow() {
         createComponents();
+
+        if (game.getGameMode() == 3) {
+            int aiFirstMove = Integer.parseInt(game.players[0].pickPosition());
+            game.getGrid().markGrid(aiFirstMove);
+            gridPositionButtons[aiFirstMove - 1].setText(GridStatus.X_CLAIMED.toString());
+            game.getGrid().incrementPlayer();
+        } else if (game.getGameMode() == 4) {
+            //todo gui ai vs ai
+        }
     }
 
     private void createComponents() {
@@ -59,7 +68,7 @@ public class TicTacToeGameWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 hideThisWindow();
             }
-        }; //TODO null everything to enable gc.......
+        };
 
         endGame.addActionListener(finishActionListener);
 
@@ -77,40 +86,65 @@ public class TicTacToeGameWindow extends JFrame {
     private void gridButtonPressed(GridPositionButton gridPositionButton) {
         if (!(gridPositionButton.getText().equals(GridStatus.X_CLAIMED.toString()) ||
                 gridPositionButton.getText().equals(GridStatus.O_CLAIMED.toString()))) {
+            String playerMark = "";
+            String opponentMark = "";
+
+            if (game.getGrid().getNextPlayer() == 1) {
+                playerMark = GridStatus.X_CLAIMED.toString();
+                opponentMark = GridStatus.O_CLAIMED.toString();
+            } else {
+                playerMark = GridStatus.O_CLAIMED.toString();
+                opponentMark = GridStatus.X_CLAIMED.toString();
+            }
+
+            int gameMode = game.getGameMode(); //Button pressed behaviour depends on game mode:
+            int gridPositionButtonNumber = Integer.parseInt(gridPositionButton.getText());
+
+            // Makes player move:
+            gridPositionButton.setText(playerMark);
+
             try {
-                TicTacToeGrid grid = game.getGrid();
-
-                grid.markGrid(Integer.parseInt(gridPositionButton.getText()));
-
-                String playerMarkSymbol = "";
-
-                if (grid.getNextPlayer() == 1) {
-                    playerMarkSymbol = GridStatus.X_CLAIMED.toString();
-                } else {
-                    playerMarkSymbol = GridStatus.O_CLAIMED.toString();
+                GameStatus status = game.handleInput(gridPositionButtonNumber);
+                respondToWinTie(status);
+                if (status != GameStatus.GAME_TO_CONTINUE) {
+                    return;
+                    //todo game termination method.
                 }
-
-                gridPositionButton.setText(playerMarkSymbol); //todo set text to cur plr symb
-
-                if (game.getGrid().getNumberOfMarks() >= 3) {
-                    if (game.getGrid().isWin()) { //Win
-                        JOptionPane.showMessageDialog(null, "You have won!");
-                    } else if (game.getGrid().isMaxMovesMade()) { //Tie
-                        JOptionPane.showMessageDialog(null, "There has been a tie.");
-                    }
-                }
-
-                grid.incrementPlayer();
-
             } catch (IllegalArgumentException e) {
+                gridPositionButton.setText(String.valueOf(gridPositionButtonNumber));
+                return;
+            }
 
+            if (gameMode == 2 || gameMode == 3) {
+                try {
+                    int aiMove = Integer.parseInt(game.players[game.getGrid().getNextPlayer() - 1].pickPosition());
+                    gridPositionButtons[aiMove - 1].setText(opponentMark);
+                    GameStatus status = game.handleInput(aiMove);
+
+                    respondToWinTie(status);
+                    if (status != GameStatus.GAME_TO_CONTINUE) {
+                        return;
+                        //todo game termination method.
+                    }
+                } catch (IllegalArgumentException e) {
+                    gridPositionButton.setText(String.valueOf(gridPositionButtonNumber));
+                    return;
+                }
             }
         }
-
-
     }
 
     private void hideThisWindow() {
         this.setVisible(false);
+    }
+
+    private void respondToWinTie(GameStatus status) {
+        if (status != GameStatus.GAME_TO_CONTINUE) {
+            if (status == GameStatus.WIN) {
+                JOptionPane.showMessageDialog(null, "You have won!");
+            } else if (status == GameStatus.TIE) {
+                JOptionPane.showMessageDialog(null, "There has been a tie.");
+            }
+        }
     }
 }

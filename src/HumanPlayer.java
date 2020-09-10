@@ -30,4 +30,14 @@ public class HumanPlayer extends Player {
         Scanner in = new Scanner(System.in);
         return in.nextLine();
     }
+
+    /**
+     * Allows a human player to make a move without having to input it via command line
+     *
+     * @param gridNumber the position to be picked.
+     * @return the position that has been picked.
+     */
+    public String pickPosition(Integer gridNumber) {
+        return gridNumber.toString();
+    }
 }
