@@ -63,12 +63,7 @@ public class TicTacToeGameWindow extends JFrame {
         JLabel winCount = new JLabel("Player 1: x Player 2: y");
         JButton endGame = new JButton("Finish Game");
 
-        ActionListener finishActionListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                hideThisWindow();
-            }
-        };
+        ActionListener finishActionListener = e -> hideThisWindow();
 
         endGame.addActionListener(finishActionListener);
 
@@ -97,34 +92,33 @@ public class TicTacToeGameWindow extends JFrame {
                 opponentMark = GridStatus.X_CLAIMED.toString();
             }
 
-            int gameMode = game.getGameMode(); //Button pressed behaviour depends on game mode:
             int gridPositionButtonNumber = Integer.parseInt(gridPositionButton.getText());
 
-            // Makes player move:
-            gridPositionButton.setText(playerMark);
+            gridPositionButton.setText(playerMark); // Makes player move:
 
             try {
                 GameStatus status = game.handleInput(gridPositionButtonNumber);
                 respondToWinTie(status);
-                if (status != GameStatus.GAME_TO_CONTINUE) {
+
+                if (isGameToEnd(status)) {
+                    terminateGame();
                     return;
-                    //todo game termination method.
                 }
             } catch (IllegalArgumentException e) {
                 gridPositionButton.setText(String.valueOf(gridPositionButtonNumber));
                 return;
             }
 
-            if (gameMode == 2 || gameMode == 3) {
+            if (isHumanPlayingAgainstAi()) { // Makes AI move:
                 try {
                     int aiMove = Integer.parseInt(game.players[game.getGrid().getNextPlayer() - 1].pickPosition());
                     gridPositionButtons[aiMove - 1].setText(opponentMark);
                     GameStatus status = game.handleInput(aiMove);
-
                     respondToWinTie(status);
-                    if (status != GameStatus.GAME_TO_CONTINUE) {
+
+                    if (isGameToEnd(status)) {
+                        terminateGame();
                         return;
-                        //todo game termination method.
                     }
                 } catch (IllegalArgumentException e) {
                     gridPositionButton.setText(String.valueOf(gridPositionButtonNumber));
@@ -132,6 +126,19 @@ public class TicTacToeGameWindow extends JFrame {
                 }
             }
         }
+    }
+
+    private void terminateGame() {
+        setVisible(false);
+    }
+
+    private boolean isHumanPlayingAgainstAi() {
+        int gameMode = game.getGameMode();
+        return gameMode == 2 || gameMode == 3;
+    }
+
+    private boolean isGameToEnd(GameStatus status) {
+        return status != GameStatus.GAME_TO_CONTINUE;
     }
 
     private void hideThisWindow() {
