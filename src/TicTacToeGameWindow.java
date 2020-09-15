@@ -20,9 +20,15 @@ public class TicTacToeGameWindow extends JFrame {
             gridPositionButtons[aiFirstMove - 1].setText(GridStatus.X_CLAIMED.toString());
             game.getGrid().incrementPlayer();
         } else if (game.getGameMode() == 4) {
+            initAiVsAiMode();
             //todo gui ai vs ai
         }
     }
+
+    private void initAiVsAiMode() {
+
+    }
+
 
     private void createComponents() {
         try {
@@ -81,20 +87,10 @@ public class TicTacToeGameWindow extends JFrame {
     private void gridButtonPressed(GridPositionButton gridPositionButton) {
         if (!(gridPositionButton.getText().equals(GridStatus.X_CLAIMED.toString()) ||
                 gridPositionButton.getText().equals(GridStatus.O_CLAIMED.toString()))) {
-            String playerMark = "";
-            String opponentMark = "";
-
-            if (game.getGrid().getNextPlayer() == 1) {
-                playerMark = GridStatus.X_CLAIMED.toString();
-                opponentMark = GridStatus.O_CLAIMED.toString();
-            } else {
-                playerMark = GridStatus.O_CLAIMED.toString();
-                opponentMark = GridStatus.X_CLAIMED.toString();
-            }
 
             int gridPositionButtonNumber = Integer.parseInt(gridPositionButton.getText());
 
-            gridPositionButton.setText(playerMark); // Makes player move:
+            gridPositionButton.setText(getPlayerMark()); // Makes player move:
 
             try {
                 GameStatus status = game.handleInput(gridPositionButtonNumber);
@@ -110,21 +106,27 @@ public class TicTacToeGameWindow extends JFrame {
             }
 
             if (isHumanPlayingAgainstAi()) { // Makes AI move:
-                try {
-                    int aiMove = Integer.parseInt(game.players[game.getGrid().getNextPlayer() - 1].pickPosition());
-                    gridPositionButtons[aiMove - 1].setText(opponentMark);
-                    GameStatus status = game.handleInput(aiMove);
-                    respondToWinTie(status);
-
-                    if (isGameToEnd(status)) {
-                        terminateGame();
-                        return;
-                    }
-                } catch (IllegalArgumentException e) {
-                    gridPositionButton.setText(String.valueOf(gridPositionButtonNumber));
-                    return;
-                }
+                aiMove();
             }
+        }
+    }
+
+    private String getPlayerMark() {
+        if (game.getGrid().getNextPlayer() == 1) {
+            return GridStatus.X_CLAIMED.toString();
+        } else {
+            return GridStatus.O_CLAIMED.toString();
+        }
+    }
+
+    private void aiMove() {
+        int aiMove = Integer.parseInt(game.players[game.getGrid().getNextPlayer() - 1].pickPosition());
+        gridPositionButtons[aiMove - 1].setText(getPlayerMark());
+        GameStatus status = game.handleInput(aiMove);
+        respondToWinTie(status);
+
+        if (isGameToEnd(status)) {
+            terminateGame();
         }
     }
 
