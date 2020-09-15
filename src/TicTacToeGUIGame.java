@@ -8,41 +8,42 @@ public class TicTacToeGUIGame extends TicTacToeGame {
     }
 
     protected void playTicTacToe() {
-        // Configure game:
+        boolean isValidGameModeEntered = false;
 
-        // Ask for game mode:
-        // 1 2 3 or 4
-        gameMode = Integer.parseInt(JOptionPane.showInputDialog("Select game mode 1, 2, 3, or 4"));
-        //todo validation
+        while (!isValidGameModeEntered) {
+            gameMode = Integer.parseInt(JOptionPane.showInputDialog("Select game mode 1, 2, 3, or 4"));
 
-        // Ask for player name/ AI difficulty:
+            if (gameMode == 1) {
+                isValidGameModeEntered = true;
+                String player1Name = JOptionPane.showInputDialog("Enter player 1 name:");
+                String player2Name = JOptionPane.showInputDialog("Enter player 2 name:");
 
-        if (gameMode == 1) {
-            String player1Name = JOptionPane.showInputDialog("Enter player 1 name:");
-            String player2Name = JOptionPane.showInputDialog("Enter player 2 name:");
+                players[0] = new HumanPlayer(player1Name);
+                players[1] = new HumanPlayer(player2Name);
+            } else if (gameMode == 2) {
+                isValidGameModeEntered = true;
+                String player1Name = JOptionPane.showInputDialog("Enter player 1 name:");
+                AIDifficulty player2difficulty = inputAiDifficulty(2);
 
-            players[0] = new HumanPlayer(player1Name);
-            players[1] = new HumanPlayer(player2Name);
-        } else if (gameMode == 2) {
-            String player1Name = JOptionPane.showInputDialog("Enter player 1 name:");
-            AIDifficulty player2difficulty = inputAiDifficulty(2);
+                players[0] = new HumanPlayer(player1Name);
+                players[1] = new AITicTacToePlayer("AI player 2", player2difficulty, grid);
+            } else if (gameMode == 3) {
+                isValidGameModeEntered = true;
+                AIDifficulty player1difficulty = inputAiDifficulty(1);
+                String player2Name = JOptionPane.showInputDialog("Enter player 2 name:");
 
-            players[0] = new HumanPlayer(player1Name);
-            players[1] = new AITicTacToePlayer("AI player 2", player2difficulty, grid);
-        } else if (gameMode == 3) {
-            AIDifficulty player1difficulty = inputAiDifficulty(1);
-            String player2Name = JOptionPane.showInputDialog("Enter player 2 name:");
+                players[0] = new AITicTacToePlayer("AI player 1", player1difficulty, grid);
+                players[1] = new HumanPlayer(player2Name);
+            } else if (gameMode == 4) {
+                isValidGameModeEntered = true;
+                AIDifficulty player1difficulty = inputAiDifficulty(1);
+                AIDifficulty player2difficulty = inputAiDifficulty(2);
 
-            players[0] = new AITicTacToePlayer("AI player 1", player1difficulty, grid);
-            players[1] = new HumanPlayer(player2Name);
-        } else if (gameMode == 4) {
-            AIDifficulty player1difficulty = inputAiDifficulty(1);
-            AIDifficulty player2difficulty = inputAiDifficulty(2);
-
-            players[0] = new AITicTacToePlayer("AI player 1", player1difficulty, grid);
-            players[1] = new AITicTacToePlayer("AI player 2", player2difficulty, grid);
-        } else {
-            System.out.println("BAD INPUT"); //todo validation...
+                players[0] = new AITicTacToePlayer("AI player 1", player1difficulty, grid);
+                players[1] = new AITicTacToePlayer("AI player 2", player2difficulty, grid);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please enter a valid game mode.");
+            }
         }
     }
 

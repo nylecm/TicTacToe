@@ -148,7 +148,8 @@ public class TicTacToeGameWindow extends JFrame {
     private void respondToWinTie(GameStatus status) {
         if (status != GameStatus.GAME_TO_CONTINUE) {
             if (status == GameStatus.WIN) {
-                JOptionPane.showMessageDialog(null, "You have won!");
+                game.getGrid().incrementPlayer(); //todo find a less hacky way!
+                JOptionPane.showMessageDialog(null, game.players[game.getGrid().getNextPlayer() - 1].getName() + " won!");
             } else if (status == GameStatus.TIE) {
                 JOptionPane.showMessageDialog(null, "There has been a tie.");
             }
