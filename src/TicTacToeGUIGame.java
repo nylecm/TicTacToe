@@ -18,19 +18,42 @@ public class TicTacToeGUIGame extends TicTacToeGame {
         // Ask for player name/ AI difficulty:
 
         if (gameMode == 1) {
-            players[0] = new HumanPlayer("Human player 1");
-            players[1] = new HumanPlayer("Human player 2");
+            String player1Name = JOptionPane.showInputDialog("Enter player 1 name:");
+            String player2Name = JOptionPane.showInputDialog("Enter player 2 name:");
+
+            players[0] = new HumanPlayer(player1Name);
+            players[1] = new HumanPlayer(player2Name);
         } else if (gameMode == 2) {
-            players[0] = new HumanPlayer("Human player 1");
-            players[1] = new AITicTacToePlayer("AI player 2", AIDifficulty.HARD, grid);
+            String player1Name = JOptionPane.showInputDialog("Enter player 1 name:");
+            AIDifficulty player2difficulty = inputAiDifficulty(2);
+
+            players[0] = new HumanPlayer(player1Name);
+            players[1] = new AITicTacToePlayer("AI player 2", player2difficulty, grid);
         } else if (gameMode == 3) {
-            players[0] = new AITicTacToePlayer("AI player 1", AIDifficulty.HARD, grid);
-            players[1] = new HumanPlayer("Human player 2");
+            AIDifficulty player1difficulty = inputAiDifficulty(1);
+            String player2Name = JOptionPane.showInputDialog("Enter player 2 name:");
+
+            players[0] = new AITicTacToePlayer("AI player 1", player1difficulty, grid);
+            players[1] = new HumanPlayer(player2Name);
         } else if (gameMode == 4) {
-            players[0] = new AITicTacToePlayer("AI player 1", AIDifficulty.HARD, grid);
-            players[1] = new AITicTacToePlayer("AI player 2", AIDifficulty.HARD, grid);
+            AIDifficulty player1difficulty = inputAiDifficulty(1);
+            AIDifficulty player2difficulty = inputAiDifficulty(2);
+
+            players[0] = new AITicTacToePlayer("AI player 1", player1difficulty, grid);
+            players[1] = new AITicTacToePlayer("AI player 2", player2difficulty, grid);
         } else {
             System.out.println("BAD INPUT"); //todo validation...
+        }
+    }
+
+    private AIDifficulty inputAiDifficulty(int aiPlayerNumber) {
+        while (true) {
+            String input = JOptionPane.showInputDialog("Enter ai difficulty for AI player " + aiPlayerNumber + ":");
+            try {
+                return validateAiDifficultyInput(input);
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
         }
     }
 

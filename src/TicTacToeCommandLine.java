@@ -171,14 +171,12 @@ public class TicTacToeCommandLine extends TicTacToeGame {
             System.out.println("Enter m for a medium AI.");
             System.out.println("Enter h for an impossible AI.");
 
-            String difficultyInput = in.nextLine();
+            String input = in.nextLine();
 
-            if (difficultyInput.equalsIgnoreCase("e")) {
-                return AIDifficulty.EASY;
-            } else if (difficultyInput.equalsIgnoreCase("m")) {
-                return AIDifficulty.MEDIUM;
-            } else if (difficultyInput.equalsIgnoreCase("h")) {
-                return AIDifficulty.HARD;
+            try {
+                return validateAiDifficultyInput(input);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
