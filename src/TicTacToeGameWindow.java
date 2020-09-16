@@ -1,10 +1,15 @@
+import jdk.nashorn.internal.scripts.JO;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.concurrent.TimeUnit;
 
 public class TicTacToeGameWindow extends JFrame {
     public final static int WIDTH = 300;
     public final static int HEIGHT = 320;
+
+    private boolean isGridLocked = false;
 
     private final TicTacToeGUIGame game = new TicTacToeGUIGame();
 
@@ -14,7 +19,7 @@ public class TicTacToeGameWindow extends JFrame {
         createComponents();
 
         if (game.getGameMode() == 3) {
-            aiMove();
+            aiMove(0);
         } else if (game.getGameMode() == 4) {
             initAiVsAiMode();
         }
@@ -24,7 +29,7 @@ public class TicTacToeGameWindow extends JFrame {
         GameStatus status = GameStatus.GAME_TO_CONTINUE;
 
         while (!isGameToEnd(status)) {
-            aiMove();
+            aiMove(1);
         }
     }
 
@@ -79,31 +84,43 @@ public class TicTacToeGameWindow extends JFrame {
     private void gridButtonPressed(GridPositionButton gridPositionButton) {
         if (!(gridPositionButton.getText().equals(GridStatus.X_CLAIMED.toString()) ||
                 gridPositionButton.getText().equals(GridStatus.O_CLAIMED.toString()))) {
-            boolean isMoveMadeOrGameFinished = playerMove(gridPositionButton);
+            boolean isMoveMadeOrGameFinished;
+            try {
+                isMoveMadeOrGameFinished = playerMove(gridPositionButton);
+            } catch (IllegalStateException e) {
+                return;
+            }
 
             if (isMoveMadeOrGameFinished && isHumanPlayingAgainstAi()) {
-                aiMove();
+                Thread newThread = new Thread(() -> {
+                    aiMove(1);
+                });
+                newThread.start();
             }
         }
     }
 
-    private boolean playerMove(GridPositionButton gridPositionButton) {
-        int gridPositionButtonNumber = Integer.parseInt(gridPositionButton.getText());
+    private boolean playerMove(GridPositionButton gridPositionButton) throws IllegalStateException {
+        if (!isGridLocked) {
+            int gridPositionButtonNumber = Integer.parseInt(gridPositionButton.getText());
 
-        try {
-            gridPositionButton.setText(getPlayerMark());
-            GameStatus status = game.handleInput(gridPositionButtonNumber);
-            respondToWinTie(status);
+            try {
+                gridPositionButton.setText(getPlayerMark());
+                GameStatus status = game.handleInput(gridPositionButtonNumber);
+                respondToWinTie(status);
 
-            if (isGameToEnd(status)) {
-                terminateGame();
+                if (isGameToEnd(status)) {
+                    terminateGame();
+                    return false;
+                }
+            } catch (IllegalArgumentException e) {
+                gridPositionButton.setText(String.valueOf(gridPositionButtonNumber));
                 return false;
             }
-        } catch (IllegalArgumentException e) {
-            gridPositionButton.setText(String.valueOf(gridPositionButtonNumber));
-            return false;
+            return true;
+        } else {
+            throw new IllegalStateException("Grid is locked");
         }
-        return true;
     }
 
     private String getPlayerMark() {
@@ -114,8 +131,16 @@ public class TicTacToeGameWindow extends JFrame {
         }
     }
 
-    private void aiMove() {
+    private void aiMove(int timeDelay) {
+        isGridLocked = true;
         int aiMove = Integer.parseInt(game.players[game.getGrid().getNextPlayer() - 1].pickPosition());
+
+        try {
+            TimeUnit.SECONDS.sleep(timeDelay);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
+
         gridPositionButtons[aiMove - 1].setText(getPlayerMark());
         GameStatus status = game.handleInput(aiMove);
         respondToWinTie(status);
@@ -123,6 +148,7 @@ public class TicTacToeGameWindow extends JFrame {
         if (isGameToEnd(status)) {
             terminateGame();
         }
+        isGridLocked = false;
     }
 
     private void terminateGame() {
