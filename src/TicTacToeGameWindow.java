@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TicTacToeGameWindow extends JFrame {
@@ -15,20 +14,19 @@ public class TicTacToeGameWindow extends JFrame {
         createComponents();
 
         if (game.getGameMode() == 3) {
-            int aiFirstMove = Integer.parseInt(game.players[0].pickPosition());
-            game.getGrid().markGrid(aiFirstMove);
-            gridPositionButtons[aiFirstMove - 1].setText(GridStatus.X_CLAIMED.toString());
-            game.getGrid().incrementPlayer();
+            aiMove();
         } else if (game.getGameMode() == 4) {
             initAiVsAiMode();
-            //todo gui ai vs ai
         }
     }
 
     private void initAiVsAiMode() {
+        GameStatus status = GameStatus.GAME_TO_CONTINUE;
 
+        while (!isGameToEnd(status)) {
+            aiMove();
+        }
     }
-
 
     private void createComponents() {
         try {
@@ -48,13 +46,7 @@ public class TicTacToeGameWindow extends JFrame {
             gridPositionButtons[i] = new GridPositionButton(i + 1);
 
             int finalI = i;
-            ActionListener actionListener = new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    gridButtonPressed(gridPositionButtons[finalI]);
-                }
-            };
-
+            ActionListener actionListener = e -> gridButtonPressed(gridPositionButtons[finalI]);
             gridPositionButtons[i].addActionListener(actionListener);
 
             grid.add(gridPositionButtons[i]);
@@ -87,28 +79,31 @@ public class TicTacToeGameWindow extends JFrame {
     private void gridButtonPressed(GridPositionButton gridPositionButton) {
         if (!(gridPositionButton.getText().equals(GridStatus.X_CLAIMED.toString()) ||
                 gridPositionButton.getText().equals(GridStatus.O_CLAIMED.toString()))) {
+            boolean isMoveMadeOrGameFinished = playerMove(gridPositionButton);
 
-            int gridPositionButtonNumber = Integer.parseInt(gridPositionButton.getText());
-
-            gridPositionButton.setText(getPlayerMark()); // Makes player move:
-
-            try {
-                GameStatus status = game.handleInput(gridPositionButtonNumber);
-                respondToWinTie(status);
-
-                if (isGameToEnd(status)) {
-                    terminateGame();
-                    return;
-                }
-            } catch (IllegalArgumentException e) {
-                gridPositionButton.setText(String.valueOf(gridPositionButtonNumber));
-                return;
-            }
-
-            if (isHumanPlayingAgainstAi()) { // Makes AI move:
+            if (isMoveMadeOrGameFinished && isHumanPlayingAgainstAi()) {
                 aiMove();
             }
         }
+    }
+
+    private boolean playerMove(GridPositionButton gridPositionButton) {
+        int gridPositionButtonNumber = Integer.parseInt(gridPositionButton.getText());
+
+        try {
+            gridPositionButton.setText(getPlayerMark());
+            GameStatus status = game.handleInput(gridPositionButtonNumber);
+            respondToWinTie(status);
+
+            if (isGameToEnd(status)) {
+                terminateGame();
+                return false;
+            }
+        } catch (IllegalArgumentException e) {
+            gridPositionButton.setText(String.valueOf(gridPositionButtonNumber));
+            return false;
+        }
+        return true;
     }
 
     private String getPlayerMark() {
