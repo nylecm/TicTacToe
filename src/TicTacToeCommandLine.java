@@ -25,6 +25,9 @@ public class TicTacToeCommandLine extends TicTacToeGame {
     private static final String INPUT_PROMPT = "Input position number, or press" +
             " I for instructions.";
 
+    /**
+     * Instantiates a new Tic tac toe command-line game.
+     */
     public TicTacToeCommandLine() {
         playTicTacToe();
     }
@@ -71,7 +74,6 @@ public class TicTacToeCommandLine extends TicTacToeGame {
                 isGameFinished = playerMoveInput(curPlayer);
             }
             // Game Finished.
-
             isGameToRepeat = isGameToRepeat(in); // Checks if user wants to play again.
         }
     }

@@ -1,29 +1,26 @@
 import javax.swing.*;
-import javax.xml.bind.annotation.XmlType;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+/**
+ * <b>File Name: </b> <p>GridPositionButton.java</p>
+ * <b>Description: </b>
+ * <p>
+ * A JButton subclass that is used in a tic tac toe grid.
+ * </p>
+ *
+ * @author nylecm
+ */
 public class GridPositionButton extends JButton {
-    private final Integer gridPosition;
-    private GridStatus gridStatus = GridStatus.UNCLAIMED;
     private static final int BUTTON_TEXT_SIZE = 40;
 
+    /**
+     * Instantiates a new grid position button object setting text to grid
+     * position number, and setting the buttons font.
+     *
+     * @param gridPosition the grid position that the button represents.
+     */
     public GridPositionButton(Integer gridPosition) {
-        this.gridPosition = gridPosition;
         setText(gridPosition.toString());
         setFont(new Font("Ariel", Font.PLAIN, BUTTON_TEXT_SIZE));
-    }
-
-    public Integer getGridPosition() {
-        return gridPosition;
-    }
-
-    public GridStatus getGridStatus() {
-        return gridStatus;
-    }
-
-    public void setGridStatus(GridStatus gridStatus) {
-        this.gridStatus = gridStatus;
     }
 }

@@ -1,10 +1,9 @@
-import jdk.nashorn.internal.scripts.JO;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 
+//todo comment TicTacToeGameWindow
 public class TicTacToeGameWindow extends JFrame {
     public final static int WIDTH = 300;
     public final static int HEIGHT = 320;
@@ -13,7 +12,8 @@ public class TicTacToeGameWindow extends JFrame {
 
     private final TicTacToeGUIGame game = new TicTacToeGUIGame();
 
-    GridPositionButton[] gridPositionButtons = new GridPositionButton[TicTacToeGrid.NUMBER_OF_GRID_POSITIONS];
+    GridPositionButton[] gridPositionButtons =
+            new GridPositionButton[TicTacToeGrid.NUMBER_OF_GRID_POSITIONS];
 
     public TicTacToeGameWindow() {
         createComponents();

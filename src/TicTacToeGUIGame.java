@@ -1,5 +1,6 @@
 import javax.swing.*;
 
+//todo comment TicTacToeGUIGame
 public class TicTacToeGUIGame extends TicTacToeGame {
     private int gameMode;
 

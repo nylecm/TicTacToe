@@ -1,8 +1,7 @@
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//todo comment TicTacToeMainMenu
 public class TicTacToeMainMenu extends JFrame {
     private final static int WIDTH = 300;
     private final static int HEIGHT = 200;
