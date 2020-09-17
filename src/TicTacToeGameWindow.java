@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
@@ -103,9 +104,11 @@ public class TicTacToeGameWindow extends JFrame {
     private boolean playerMove(GridPositionButton gridPositionButton) throws IllegalStateException {
         if (!isGridLocked) {
             int gridPositionButtonNumber = Integer.parseInt(gridPositionButton.getText());
+            Color oldButtonTextColour = gridPositionButton.getForeground();
 
             try {
                 gridPositionButton.setText(getPlayerMark());
+                gridPositionButton.setForeground(getPlayerColour());
                 GameStatus status = game.handleInput(gridPositionButtonNumber);
                 respondToWinTie(status);
 
@@ -115,19 +118,12 @@ public class TicTacToeGameWindow extends JFrame {
                 }
             } catch (IllegalArgumentException e) {
                 gridPositionButton.setText(String.valueOf(gridPositionButtonNumber));
+                gridPositionButton.setForeground(oldButtonTextColour);
                 return false;
             }
             return true;
         } else {
-            throw new IllegalStateException("Grid is locked");
-        }
-    }
-
-    private String getPlayerMark() {
-        if (game.getGrid().getNextPlayer() == 1) {
-            return GridStatus.X_CLAIMED.toString();
-        } else {
-            return GridStatus.O_CLAIMED.toString();
+            throw new IllegalStateException("Grid is locked!");
         }
     }
 
@@ -141,7 +137,10 @@ public class TicTacToeGameWindow extends JFrame {
             Thread.currentThread().interrupt();
         }
 
-        gridPositionButtons[aiMove - 1].setText(getPlayerMark());
+        GridPositionButton button = gridPositionButtons[aiMove - 1];
+        button.setText(getPlayerMark());
+        button.setForeground(getPlayerColour());
+
         GameStatus status = game.handleInput(aiMove);
         respondToWinTie(status);
 
@@ -149,6 +148,22 @@ public class TicTacToeGameWindow extends JFrame {
             terminateGame();
         }
         isGridLocked = false;
+    }
+
+    private String getPlayerMark() {
+        if (game.getGrid().getNextPlayer() == 1) {
+            return GridStatus.X_CLAIMED.toString();
+        } else {
+            return GridStatus.O_CLAIMED.toString();
+        }
+    }
+
+    private Color getPlayerColour() {
+        if (game.getGrid().getNextPlayer() == 1) {
+            return Color.BLUE;
+        } else {
+            return Color.RED;
+        }
     }
 
     private void terminateGame() {
