@@ -1,22 +1,21 @@
 import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 
 //todo comment TicTacToeGameWindow
-public class TicTacToeGameWindow extends JFrame {
-    public final static int WIDTH = 300;
-    public final static int HEIGHT = 320;
+class TicTacToeGameWindow extends JFrame {
+    private final static int WIDTH = 300;
+    private final static int HEIGHT = 320;
 
     private boolean isGridLocked = false;
 
     private final TicTacToeGUIGame game = new TicTacToeGUIGame();
 
-    GridPositionButton[] gridPositionButtons =
+    private GridPositionButton[] gridPositionButtons =
             new GridPositionButton[TicTacToeGrid.NUMBER_OF_GRID_POSITIONS];
 
-    public TicTacToeGameWindow() {
+    TicTacToeGameWindow() {
         createComponents();
 
         if (game.getGameMode() == 3) {
@@ -29,9 +28,12 @@ public class TicTacToeGameWindow extends JFrame {
     private void initAiVsAiMode() {
         GameStatus status = GameStatus.GAME_TO_CONTINUE;
 
-        while (!isGameToEnd(status)) {
-            aiMove(1);
-        }
+        Thread newThread = new Thread(() -> {
+            while (!isGameToEnd(status)) {
+                aiMove(1);
+            }
+        });
+        newThread.start();
     }
 
     private void createComponents() {
