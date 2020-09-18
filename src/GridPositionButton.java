@@ -10,7 +10,7 @@ import java.awt.*;
  *
  * @author nylecm
  */
-public class GridPositionButton extends JButton {
+class GridPositionButton extends JButton {
     private static final int BUTTON_TEXT_SIZE = 40;
 
     /**
@@ -19,7 +19,7 @@ public class GridPositionButton extends JButton {
      *
      * @param gridPosition the grid position that the button represents.
      */
-    public GridPositionButton(Integer gridPosition) {
+    GridPositionButton(Integer gridPosition) {
         setText(gridPosition.toString());
         setFont(new Font("Ariel", Font.PLAIN, BUTTON_TEXT_SIZE));
     }

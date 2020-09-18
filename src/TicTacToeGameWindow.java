@@ -66,7 +66,7 @@ class TicTacToeGameWindow extends JFrame {
         bottom.setLayout(new BorderLayout());
         bottom.setSize(WIDTH, 20);
 
-        JLabel winCount = new JLabel("Player 1: x Player 2: y");
+        JLabel winCount = new JLabel("Player 1: " + game.players[0].getName() + " Player 2: " + game.players[1].getName());
         JButton endGame = new JButton("Finish Game");
 
         ActionListener finishActionListener = e -> hideThisWindow();

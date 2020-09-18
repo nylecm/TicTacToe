@@ -2,11 +2,11 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 
 //todo comment TicTacToeMainMenu
-public class TicTacToeMainMenu extends JFrame {
+class TicTacToeMainMenu extends JFrame {
     private final static int WIDTH = 300;
     private final static int HEIGHT = 200;
 
-    public TicTacToeMainMenu() {
+    TicTacToeMainMenu() {
         createComponents();
     }
 
@@ -27,7 +27,6 @@ public class TicTacToeMainMenu extends JFrame {
             TicTacToeGameWindow newGameWindow = new TicTacToeGameWindow();
             newGameWindow.setVisible(true);
         };
-
         startGameButton.addActionListener(startGameButtonListener);
 
         JPanel mainMenuPanel = new JPanel();
