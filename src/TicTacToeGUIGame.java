@@ -12,18 +12,18 @@ public class TicTacToeGUIGame extends TicTacToeGame {
         boolean isValidGameModeEntered = false;
 
         while (!isValidGameModeEntered) {
-            gameMode = Integer.parseInt(JOptionPane.showInputDialog("Select game mode 1, 2, 3, or 4"));
+            gameMode = Integer.parseInt(JOptionPane.showInputDialog("Select game mode: \n1 - (human vs human), \n2 - (human vs ai), \n3 - (ai vs human), or \n4 - (ai vs ai):"));
 
             if (gameMode == 1) {
                 isValidGameModeEntered = true;
-                String player1Name = JOptionPane.showInputDialog("Enter player 1 name:");
-                String player2Name = JOptionPane.showInputDialog("Enter player 2 name:");
+                String player1Name = JOptionPane.showInputDialog("Enter player 1's name:");
+                String player2Name = JOptionPane.showInputDialog("Enter player 2's name:");
 
                 players[0] = new HumanPlayer(player1Name);
                 players[1] = new HumanPlayer(player2Name);
             } else if (gameMode == 2) {
                 isValidGameModeEntered = true;
-                String player1Name = JOptionPane.showInputDialog("Enter player 1 name:");
+                String player1Name = JOptionPane.showInputDialog("Enter player 1's name:");
                 AIDifficulty player2difficulty = inputAiDifficulty(2);
 
                 players[0] = new HumanPlayer(player1Name);
@@ -31,9 +31,9 @@ public class TicTacToeGUIGame extends TicTacToeGame {
             } else if (gameMode == 3) {
                 isValidGameModeEntered = true;
                 AIDifficulty player1difficulty = inputAiDifficulty(1);
-                String player2Name = JOptionPane.showInputDialog("Enter player 2 name:");
+                String player2Name = JOptionPane.showInputDialog("Enter player 2's name:");
 
-                players[0] = new AITicTacToePlayer("AI player 1", player1difficulty, grid);
+                players[0] = new AITicTacToePlayer("AI player 1's", player1difficulty, grid);
                 players[1] = new HumanPlayer(player2Name);
             } else if (gameMode == 4) {
                 isValidGameModeEntered = true;

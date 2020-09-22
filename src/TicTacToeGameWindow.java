@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
 class TicTacToeGameWindow extends JFrame {
     private final static int WIDTH = 300;
     private final static int HEIGHT = 320;
+    private final static Color X_MARK_COLOUR = Color.BLUE;
+    private final static Color O_MARK_COLOUR = Color.RED;
 
     private boolean isGridLocked = false;
 
@@ -66,7 +68,7 @@ class TicTacToeGameWindow extends JFrame {
         bottom.setLayout(new BorderLayout());
         bottom.setSize(WIDTH, 20);
 
-        JLabel winCount = new JLabel("Player 1: " + game.players[0].getName() + " Player 2: " + game.players[1].getName());
+        JLabel winCount = new JLabel("Player 1: " + game.players[0].getName() + " Player 2: " + game.players[1].getName()); //todo display AI player difficulty.
         JButton endGame = new JButton("Finish Game");
 
         ActionListener finishActionListener = e -> hideThisWindow();
@@ -162,9 +164,9 @@ class TicTacToeGameWindow extends JFrame {
 
     private Color getPlayerColour() {
         if (game.getGrid().getNextPlayer() == 1) {
-            return Color.BLUE;
+            return X_MARK_COLOUR;
         } else {
-            return Color.RED;
+            return O_MARK_COLOUR;
         }
     }
 
